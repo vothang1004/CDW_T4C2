@@ -3,6 +3,7 @@ package com.example.ecommerce.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,8 +34,14 @@ public class CartController {
 		return cartService.getCartById(id);
 	}
 
-	@PostMapping
+//	@PostMapping(consumes = {"application/json; charset=UTF-8"}, produces = {"application/json; charset=UTF-8"})
+//	@PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Cart addCart(@RequestBody Cart cart) {
+		if (cart == null || cart.getUserId() == null || cart.getProductsWithAmount() == null) {
+			System.out.println("st wrong");
+			// throw new ("Missing required parameters");
+		}
 		return cartService.addCart(cart);
 	}
 
