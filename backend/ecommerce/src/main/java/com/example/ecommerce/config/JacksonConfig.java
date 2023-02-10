@@ -3,6 +3,7 @@ package com.example.ecommerce.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.example.ecommerce.deserializer.CartJsonDeserializer;
 import com.example.ecommerce.model.Cart;
 import com.example.ecommerce.serializer.CartSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,6 +17,7 @@ public class JacksonConfig {
 		ObjectMapper objectMapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
 		module.addSerializer(Cart.class, new CartSerializer());
+		module.addDeserializer(Cart.class, new CartJsonDeserializer());
 		objectMapper.registerModule(module);
 		return objectMapper;
 	}

@@ -14,12 +14,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.Table;
 
+import com.example.ecommerce.deserializer.CartJsonDeserializer;
 import com.example.ecommerce.serializer.CartSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "carts")
 @JsonSerialize(using = CartSerializer.class)
+@JsonDeserialize(using = CartJsonDeserializer.class)
+@AllArgsConstructor
+@NoArgsConstructor
 public class Cart {
 
 	@Id
@@ -28,6 +36,33 @@ public class Cart {
 
 //	@Column(name = "user_id")
 	private Long userId;
+
+	@ElementCollection
+	@CollectionTable(name = "cart_products", joinColumns = @JoinColumn(name = "cart_id"))
+	@MapKeyJoinColumn(name = "product_id")
+	@Column(name = "amount")
+	private Map<Product, Integer> productsWithAmount;
+
+	public Cart(Long userId, Map<Product, Integer> productsWithAmount) {
+		super();
+		this.userId = userId;
+		this.productsWithAmount = productsWithAmount;
+	}
+
+	public Cart(Long id, Long userId, Map<Product, Integer> productsWithAmount) {
+		super();
+		this.id = id;
+		this.userId = userId;
+		this.productsWithAmount = productsWithAmount;
+	}
+
+	public Cart() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Long getId() {
+		return id;
+	}
 //	@OneToOne
 //	@JoinColumn(name = "user_id")
 //	private User user;
@@ -38,16 +73,6 @@ public class Cart {
 //	@JoinTable(name = "cart_products", joinColumns = @JoinColumn(name = "cart_id"),
 //	inverseJoinColumns = @JoinColumn(name = "product_id"))
 //	private Set<Product> products;
-	@ElementCollection
-	@CollectionTable(name = "cart_products", joinColumns = @JoinColumn(name = "cart_id"))
-	@MapKeyJoinColumn(name = "product_id")
-	@Column(name = "amount")
-	private Map<Product, Integer> productsWithAmount;
-
-	public Long getId() {
-		return id;
-	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}

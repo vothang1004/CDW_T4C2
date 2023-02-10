@@ -56,8 +56,19 @@ public class CartService {
 //		Set<Product> products = cart.getProducts();
 //		
 //		products.add(product);
+		boolean productExists = false;
 		Map<Product, Integer> productsWithAmount = cart.getProductsWithAmount();
-		productsWithAmount.put(product, DEFAULT_AMOUNT);
+		for (Product p : cart.getProductsWithAmount().keySet()) {
+			if (p.getId().equals(product.getId())) {
+				int currentAmount = cart.getProductsWithAmount().get(p);
+				cart.getProductsWithAmount().put(p, currentAmount + 1);
+				productExists = true;
+				break;
+			}
+		}
+		if (!productExists) {
+			productsWithAmount.put(product, DEFAULT_AMOUNT);
+		}
 //		cart.setProducts(products);
 		cart.setProductsWithAmount(productsWithAmount);
 		return cartRepository.save(cart);
@@ -72,8 +83,23 @@ public class CartService {
 //		Set<Product> products = cart.getProducts();
 //		products.remove(product);
 //		cart.setProducts(products);
+		int currentAmount = 0;
+		Product temp = product;
 		Map<Product, Integer> productsWithAmount = cart.getProductsWithAmount();
-		productsWithAmount.remove(product);
+		for (Product p : cart.getProductsWithAmount().keySet()) {
+			if (p.getId().equals(product.getId())) {
+				temp = p;
+				currentAmount = cart.getProductsWithAmount().get(p);
+				break;
+			}
+		}
+		int amountafterminus = currentAmount - 1;
+		if (amountafterminus <= 0) {
+			productsWithAmount.remove(temp);
+		}else {
+			productsWithAmount.put(temp, amountafterminus);
+		}
+		
 //		cart.setProducts(products);
 		cart.setProductsWithAmount(productsWithAmount);
 		return cartRepository.save(cart);

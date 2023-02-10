@@ -31,4 +31,42 @@ public class CartSerializer extends JsonSerializer<Cart> {
 	        jsonGenerator.writeEndObject();
 	        jsonGenerator.writeEndObject();
 	    }
+//	@Override
+//	public void serialize(Cart cart, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
+//			throws IOException {
+//		jsonGenerator.writeStartObject();
+//		jsonGenerator.writeNumberField("id", cart.getId());
+//		jsonGenerator.writeNumberField("userId", cart.getUserId());
+//		jsonGenerator.writeFieldName("productsWithAmount");
+//		jsonGenerator.writeStartObject();
+//		for (Map.Entry<Product, Integer> entry : cart.getProductsWithAmount().entrySet()) {
+//			jsonGenerator.writeFieldName(entry.getKey().getId().toString());
+//			JsonSerializer<Product> productSerializer = serializerProvider.findValueSerializer(Product.class);
+//			productSerializer.serialize(entry.getKey(), jsonGenerator, serializerProvider);
+//			jsonGenerator.writeNumberField("amount", entry.getValue());
+//			jsonGenerator.writeEndObject();
+//		}
+//		jsonGenerator.writeEndObject();
+//		jsonGenerator.writeEndObject();
+//	}
+
+//	@Override
+//	public void serialize(Cart cart, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
+//			throws IOException {
+//		jsonGenerator.writeStartObject();
+//		jsonGenerator.writeNumberField("id", cart.getId());
+//		jsonGenerator.writeNumberField("userId", cart.getUserId());
+//		jsonGenerator.writeFieldName("productsWithAmount");
+//		jsonGenerator.writeStartObject();
+//		for (Map.Entry<Product, Integer> entry : cart.getProductsWithAmount().entrySet()) {
+//			jsonGenerator.writeFieldName(entry.getKey().getId().toString());
+//			jsonGenerator.writeStartObject();
+//			JsonSerializer<Object> productSerializer = serializerProvider.findValueSerializer(Product.class);
+//			productSerializer.serialize(entry.getKey(), jsonGenerator, serializerProvider);
+//			jsonGenerator.writeNumberField("amount", entry.getValue());
+//			jsonGenerator.writeEndObject();
+//		}
+//		jsonGenerator.writeEndObject();
+//		jsonGenerator.writeEndObject();
+//	}
 }
