@@ -26,7 +26,9 @@ public class CartService {
 		Optional<Cart> cart = cartRepository.findById(id);
 		return cart.orElse(null);
 	}
-
+	public Cart getCartByUserId(Long userId) {
+        return cartRepository.findByUserId(userId);
+    }
 	public Cart addCart(Cart cart) {
 		return cartRepository.save(cart);
 	}
