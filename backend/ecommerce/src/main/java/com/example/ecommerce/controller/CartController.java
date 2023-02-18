@@ -2,6 +2,8 @@ package com.example.ecommerce.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.ecommerce.model.Cart;
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.service.CartService;
+import com.example.ecommerce.service.JwtTokenUtil;
 
 @RestController
 @RequestMapping("/carts")
@@ -23,12 +26,33 @@ public class CartController {
 
 	@Autowired
 	private CartService cartService;
-
+	@Autowired
+	private JwtTokenUtil tokenService;
 	@GetMapping
 	public List<Cart> getAllCarts() {
 		return cartService.getAllCarts();
 	}
-
+	@GetMapping("/listmycard")
+	public Cart listMyCard(HttpServletRequest request) {
+	    // Get token from request header
+//		System.out.println("run here? 1");
+	    String token = request.getHeader("Authorization");
+//	    System.out.println("run here? 2");
+	    if (token == null || !token.startsWith("Bearer ")) {
+//	        throw new UnauthorizedException("Missing or invalid authorization header");
+	    }
+//	    System.out.println("run here? 3");
+	    token = token.substring(7);
+	    
+	    // Extract user ID from token
+	    long userId = tokenService.getUserIdFromToken(token);
+//	    System.out.println("run here? 4");
+	    // Retrieve cards for user
+//	    List<Cart> carts = cartService.getCartById(Long.parseLong(userId));
+	    Cart carts = cartService.getCartByUserId(userId);
+//	    System.out.println("cart: "+carts);
+	    return carts;
+	}
 	@GetMapping("/{id}")
 	public Cart getCartById(@PathVariable Long id) {
 		return cartService.getCartById(id);
