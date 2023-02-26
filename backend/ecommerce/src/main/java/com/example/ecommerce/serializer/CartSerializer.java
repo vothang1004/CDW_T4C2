@@ -3,16 +3,16 @@ package com.example.ecommerce.serializer;
 import java.io.IOException;
 import java.util.Map;
 
-import com.example.ecommerce.model.Cart;
+import com.example.ecommerce.model.Cart2;
 import com.example.ecommerce.model.Product;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
-public class CartSerializer extends JsonSerializer<Cart> {
+public class CartSerializer extends JsonSerializer<Cart2> {
 
 	 @Override
-	    public void serialize(Cart cart, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+	    public void serialize(Cart2 cart, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
 	        jsonGenerator.writeStartObject();
 	        jsonGenerator.writeNumberField("id", cart.getId());
 	        jsonGenerator.writeNumberField("userId", cart.getUserId());

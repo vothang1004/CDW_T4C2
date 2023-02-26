@@ -34,7 +34,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         final String requestTokenHeader = request.getHeader("Authorization");
-
+        // Skip the check for the /authenticate endpoint
+        if (request.getRequestURI().endsWith("/authenticate")) {
+            chain.doFilter(request, response);
+            return;
+        }
+        if (request.getRequestURI().endsWith("/users")) {
+            chain.doFilter(request, response);
+            return;
+        }
+        
         String username = null;
         String jwtToken = null;
 //        System.out.println("run jwt filter 1");

@@ -8,7 +8,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.ecommerce.model.Cart;
+import com.example.ecommerce.model.Cart2;
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.repository.CartRepository;
 
@@ -18,23 +18,23 @@ public class CartService {
 	@Autowired
 	private CartRepository cartRepository;
 
-	public List<Cart> getAllCarts() {
+	public List<Cart2> getAllCarts() {
 		return cartRepository.findAll();
 	}
 
-	public Cart getCartById(Long id) {
-		Optional<Cart> cart = cartRepository.findById(id);
+	public Cart2 getCartById(Long id) {
+		Optional<Cart2> cart = cartRepository.findById(id);
 		return cart.orElse(null);
 	}
-	public Cart getCartByUserId(Long userId) {
+	public Cart2 getCartByUserId(Long userId) {
         return cartRepository.findByUserId(userId);
     }
-	public Cart addCart(Cart cart) {
+	public Cart2 addCart(Cart2 cart) {
 		return cartRepository.save(cart);
 	}
 
-	public Cart updateCart(Long id, Cart updatedCart) {
-		Cart cart = getCartById(id);
+	public Cart2 updateCart(Long id, Cart2 updatedCart) {
+		Cart2 cart = getCartById(id);
 		if (cart == null) {
 			return null;
 		}
@@ -49,8 +49,8 @@ public class CartService {
 		cartRepository.deleteById(id);
 	}
 
-	public Cart addProductToCart(Long cartId, Product product) {
-		Cart cart = getCartById(cartId);
+	public Cart2 addProductToCart(Long cartId, Product product) {
+		Cart2 cart = getCartById(cartId);
 		if (cart == null) {
 			return null;
 		}
@@ -76,8 +76,8 @@ public class CartService {
 		return cartRepository.save(cart);
 	}
 
-	public Cart removeProductFromCart(Long cartId, Product product) {
-		Cart cart = getCartById(cartId);
+	public Cart2 removeProductFromCart(Long cartId, Product product) {
+		Cart2 cart = getCartById(cartId);
 		if (cart == null) {
 			return null;
 		}

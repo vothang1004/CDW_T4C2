@@ -22,6 +22,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
 			org.springframework.security.core.AuthenticationException authException)
 			throws IOException, ServletException {
 		// TODO Auto-generated method stub
+		System.out.println("autj excep:" +authException.getMessage());
 		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
 	}
 }

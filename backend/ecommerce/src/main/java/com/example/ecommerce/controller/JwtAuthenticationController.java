@@ -34,20 +34,20 @@ public class JwtAuthenticationController {
 
     @PostMapping
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
-    	System.out.println(authenticationRequest.getUsername() + " "+ authenticationRequest.getPassword());
-        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-
+    	System.out.println(authenticationRequest.getEmail() + " "+ authenticationRequest.getPassword());
+        authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
+        
         final UserDetails userDetails = userDetailsService
-                .loadUserByUsername(authenticationRequest.getUsername());
+                .loadUserByUsername(authenticationRequest.getEmail());
 
         final String token = jwtTokenUtil.generateToken(userDetails);
-
+       
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-    private void authenticate(String username, String password) throws Exception {
+    private void authenticate(String email, String password) throws Exception {
         try {
-        	authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        	authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         } catch (DisabledException e) {
         	System.out.println("run me");
             throw new Exception("USER_DISABLED", e);

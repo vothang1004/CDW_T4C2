@@ -1,125 +1,74 @@
 package com.example.ecommerce.model;
 
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.example.ecommerce.deserializer.CartJsonDeserializer;
-import com.example.ecommerce.serializer.CartSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
 @Entity
-@Table(name = "carts")
-@JsonSerialize(using = CartSerializer.class)
-@JsonDeserialize(using = CartJsonDeserializer.class)
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name = "cart")
 public class Cart {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-//	@Column(name = "user_id")
-	private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-	@ElementCollection
-	@CollectionTable(name = "cart_products", joinColumns = @JoinColumn(name = "cart_id"))
-	@MapKeyJoinColumn(name = "product_id")
-	@Column(name = "amount")
-	private Map<Product, Integer> productsWithAmount;
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
-	public Cart(Long userId, Map<Product, Integer> productsWithAmount) {
-		super();
-		this.userId = userId;
-		this.productsWithAmount = productsWithAmount;
-	}
+    @Column(nullable = false)
+    private int amount;
 
-	public Cart(Long id, Long userId, Map<Product, Integer> productsWithAmount) {
-		super();
-		this.id = id;
-		this.userId = userId;
-		this.productsWithAmount = productsWithAmount;
-	}
+    // constructors
 
-	public Cart() {
-		// TODO Auto-generated constructor stub
-	}
+    public Cart() {}
 
-	public Long getId() {
-		return id;
-	}
-//	@OneToOne
-//	@JoinColumn(name = "user_id")
-//	private User user;
+    public Cart(User user, Product product, int amount) {
+        this.user = user;
+        this.product = product;
+        this.amount = amount;
+    }
 
-//  @OneToMany(cascade = CascadeType.ALL)
-//  @JoinColumn(name = "cart_id")
-//	@ManyToMany
-//	@JoinTable(name = "cart_products", joinColumns = @JoinColumn(name = "cart_id"),
-//	inverseJoinColumns = @JoinColumn(name = "product_id"))
-//	private Set<Product> products;
-	public void setId(Long id) {
-		this.id = id;
-	}
+    // getters and setters
 
-	public Long getUserId() {
-		return userId;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public Map<Product, Integer> getProductsWithAmount() {
-		return productsWithAmount;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public void setProductsWithAmount(Map<Product, Integer> productsWithAmount) {
-		this.productsWithAmount = productsWithAmount;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	@Override
-	public String toString() {
-		return "Map<Product, Integer> products = " + productsWithAmount.entrySet().stream()
-				.map(entry -> entry.getKey().getName() + " : " + entry.getValue()).collect(Collectors.toList());
-	}
-//	public Set<Product> getProducts() {
-//		return products;
-//	}
-//
-//	public void setProducts(Set<Product> products) {
-//		this.products = products;
-//	}
+    public Product getProduct() {
+        return product;
+    }
 
-//	public User getUser() {
-//		return user;
-//	}
-//
-//	public void setUser(User user) {
-//		this.user = user;
-//	}
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 
-//	public List<Product> getProducts() {
-//		return products;
-//	}
-//
-//	public void setProducts(List<Product> products) {
-//		this.products = products;
-//	}
+    public int getAmount() {
+        return amount;
+    }
 
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
 }

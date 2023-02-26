@@ -1,70 +1,164 @@
 package com.example.ecommerce.model;
 
-import javax.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name = "products")
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name = "product")
 public class Product {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "name")
-	private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-	@Column(name = "description")
-	private String description;
+    @NotBlank
+    private String name;
 
-	@Column(name = "price")
-	private Double price;
+    private String description;
 
-	public Product(Long id, String name, String description, Double price) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.price = price;
-	}
+    @DecimalMin(value = "0.0", inclusive = false)
+    private BigDecimal price;
 
-	public Product() {
-		// TODO Auto-generated constructor stub
-	}
+    @Min(value = 0)
+    private Integer productStock;
 
-	public Long getId() {
-		return id;
-	}
+    private String linkImage;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @Min(value = 0)
+    private Integer view;
 
-	public String getName() {
-		return name;
-	}
+    @DecimalMin(value = "0.0")
+    private BigDecimal sale;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @CreationTimestamp
+    @Column(name = "create_date")
+    private LocalDateTime createDate;
 
-	public String getDescription() {
-		return description;
-	}
+    @UpdateTimestamp
+    @Column(name = "update_date")
+    private LocalDateTime updateDate;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public Product() {}
 
-	public Double getPrice() {
-		return price;
-	}
+    public Product(Category category, String name, String description, BigDecimal price, Integer productStock,
+                   String linkImage, Integer view, BigDecimal sale) {
+        this.category = category;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.productStock = productStock;
+        this.linkImage = linkImage;
+        this.view = view;
+        this.sale = sale;
+    }
 
-	public void setPrice(Double price) {
-		this.price = price;
-	}
+    // getters and setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public Integer getProductStock() {
+        return productStock;
+    }
+
+    public void setProductStock(Integer productStock) {
+        this.productStock = productStock;
+    }
+
+    public String getLinkImage() {
+        return linkImage;
+    }
+
+    public void setLinkImage(String linkImage) {
+        this.linkImage = linkImage;
+    }
+
+    public Integer getView() {
+        return view;
+    }
+
+    public void setView(Integer view) {
+        this.view = view;
+    }
+
+    public BigDecimal getSale() {
+        return sale;
+    }
+
+    public void setSale(BigDecimal sale) {
+        this.sale = sale;
+    }
+
+    public LocalDateTime getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDateTime createDate) {
+        this.createDate = createDate;
+    }
+
+    public LocalDateTime getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(LocalDateTime updateDate) {
+        this.updateDate = updateDate;
+    }
 }

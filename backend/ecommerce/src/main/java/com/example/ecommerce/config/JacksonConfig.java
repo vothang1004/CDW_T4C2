@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.example.ecommerce.deserializer.CartJsonDeserializer;
-import com.example.ecommerce.model.Cart;
+import com.example.ecommerce.model.Cart2;
 import com.example.ecommerce.serializer.CartSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -16,8 +16,8 @@ public class JacksonConfig {
 	public ObjectMapper objectMapper() {
 		ObjectMapper objectMapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
-		module.addSerializer(Cart.class, new CartSerializer());
-		module.addDeserializer(Cart.class, new CartJsonDeserializer());
+		module.addSerializer(Cart2.class, new CartSerializer());
+		module.addDeserializer(Cart2.class, new CartJsonDeserializer());
 		objectMapper.registerModule(module);
 		return objectMapper;
 	}

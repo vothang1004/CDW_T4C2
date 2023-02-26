@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.ecommerce.model.Cart;
+import com.example.ecommerce.model.Cart2;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.repository.CartRepository;
 import com.example.ecommerce.repository.UserRepository;
@@ -22,11 +22,13 @@ public class UserService {
 	private CartRepository cartRepository;
 
 	public List<User> getAllUsers() {
+		System.out.println("find all");
 		return userRepository.findAll();
 	}
 
 	public User getUserById(Long id) {
-		Optional<User> user = userRepository.findById(id);
+//		Optional<User> user = userRepository.findById(id);
+		Optional<User> user = null;
 		return user.orElse(null);
 	}
 
@@ -51,7 +53,7 @@ public class UserService {
 		try {
 			// Delete cart of that user - one user contains only one cart
 
-			Cart cart = cartRepository.findByUserId(userId);
+			Cart2 cart = cartRepository.findByUserId(userId);
 			cartRepository.delete(cart);
 
 //		        // Delete all orders
