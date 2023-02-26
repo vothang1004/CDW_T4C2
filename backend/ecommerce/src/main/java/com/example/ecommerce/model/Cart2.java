@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @JsonDeserialize(using = CartJsonDeserializer.class)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Cart {
+public class Cart2 {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,20 +43,20 @@ public class Cart {
 	@Column(name = "amount")
 	private Map<Product, Integer> productsWithAmount;
 
-	public Cart(Long userId, Map<Product, Integer> productsWithAmount) {
+	public Cart2(Long userId, Map<Product, Integer> productsWithAmount) {
 		super();
 		this.userId = userId;
 		this.productsWithAmount = productsWithAmount;
 	}
 
-	public Cart(Long id, Long userId, Map<Product, Integer> productsWithAmount) {
+	public Cart2(Long id, Long userId, Map<Product, Integer> productsWithAmount) {
 		super();
 		this.id = id;
 		this.userId = userId;
 		this.productsWithAmount = productsWithAmount;
 	}
 
-	public Cart() {
+	public Cart2() {
 		// TODO Auto-generated constructor stub
 	}
 

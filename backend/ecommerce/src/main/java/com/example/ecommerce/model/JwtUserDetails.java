@@ -6,21 +6,21 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class JwtUserDetails implements UserDetails {
-    private Long id;
+    private Integer id;
     private String username;
     private String email;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public JwtUserDetails(Long id, String username, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public JwtUserDetails(Integer id, String username, String email, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
     }
-
-    public Long getId() {
+    
+    public Integer getId() {
         return id;
     }
 

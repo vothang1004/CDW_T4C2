@@ -5,16 +5,16 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.example.ecommerce.model.Cart;
+import com.example.ecommerce.model.Cart2;
 import com.example.ecommerce.model.Product;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class CartJsonDeserializer extends JsonDeserializer<Cart> {
+public class CartJsonDeserializer extends JsonDeserializer<Cart2> {
 	@Override
-	public Cart deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+	public Cart2 deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
 		JsonNode node = jsonParser.getCodec().readTree(jsonParser);
 //		Long id = node.get("id").asLong();
 		Long userId = node.get("userId").asLong();
@@ -28,9 +28,11 @@ public class CartJsonDeserializer extends JsonDeserializer<Cart> {
 			String description = productNode.get("description").asText();
 			Double price = productNode.get("price").asDouble();
 			Integer amount = productNode.get("amount").asInt();
-			Product product = new Product(productId, name, description, price);
+//			Product product = new Product(productId, name, description, price);
+			Product product = new Product();
+
 			productsWithAmount.put(product, amount);
 		}
-		return new Cart( userId, productsWithAmount);
+		return new Cart2(userId, productsWithAmount);
 	}
 }
