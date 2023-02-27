@@ -15,6 +15,7 @@ import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.Table;
 
 import com.example.ecommerce.deserializer.CartJsonDeserializer;
+import com.example.ecommerce.entity.Product;
 import com.example.ecommerce.serializer.CartSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

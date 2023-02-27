@@ -6,10 +6,11 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.ecommerce.model.Cart2;
-import com.example.ecommerce.model.User;
+import com.example.ecommerce.entity.User;
+import com.example.ecommerce.exception.UserRegistrationException;
 import com.example.ecommerce.repository.CartRepository;
 import com.example.ecommerce.repository.UserRepository;
 
@@ -20,7 +21,24 @@ public class UserService {
 	private UserRepository userRepository;
 	@Autowired
 	private CartRepository cartRepository;
+	public boolean isEmailExists(String email) {
+	    User user = userRepository.findByEmail(email);
+	    return user != null;
+	  }
 
+	  public User registerUser(User user) throws UserRegistrationException {
+	    if (isEmailExists(user.getEmail())) {
+	      throw new UserRegistrationException("Email already exists");
+	    }
+
+	    // encode user's password using BCryptPasswordEncoder
+	    String encodedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
+	    user.setPassword(encodedPassword);
+
+	    return userRepository.save(user);
+	  }
+
+	  
 	public List<User> getAllUsers() {
 		System.out.println("find all");
 		return userRepository.findAll();
@@ -49,12 +67,12 @@ public class UserService {
 	}
 
 	@Transactional
-	public void deleteUser(Long userId) {
+	public void deleteUser(Integer userId) {
 		try {
 			// Delete cart of that user - one user contains only one cart
 
-			Cart2 cart = cartRepository.findByUserId(userId);
-			cartRepository.delete(cart);
+//			Cart2 cart = cartRepository.findByUserId(userId);
+//			cartRepository.delete(cart);
 
 //		        // Delete all orders
 //		        List<Order> orders = orderRepository.findByUserId(userId);

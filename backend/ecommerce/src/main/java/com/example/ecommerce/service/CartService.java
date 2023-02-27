@@ -8,8 +8,8 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.ecommerce.entity.Product;
 import com.example.ecommerce.model.Cart2;
-import com.example.ecommerce.model.Product;
 import com.example.ecommerce.repository.CartRepository;
 
 @Service

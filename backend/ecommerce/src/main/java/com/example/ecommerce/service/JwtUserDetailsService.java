@@ -11,8 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.ecommerce.entity.User;
 import com.example.ecommerce.model.JwtUserDetails;
-import com.example.ecommerce.model.User;
 import com.example.ecommerce.repository.UserRepository;
 
 @Service
@@ -41,7 +41,7 @@ public class JwtUserDetailsService implements UserDetailsService {
       System.out.println("user: "+u.getPassword());
 //        return u;
       // You can add additional user details here
-      JwtUserDetails userDetails1 = new JwtUserDetails(user.getId(), user.getUsername(), user.getEmail(),
+      JwtUserDetails userDetails1 = new JwtUserDetails(user.getId(), user.getEmail(), user.getEmail(),
     		  encodedPassword, new ArrayList<>());
       return userDetails1;
     }

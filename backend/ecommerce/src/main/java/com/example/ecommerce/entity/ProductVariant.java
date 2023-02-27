@@ -1,4 +1,4 @@
-package com.example.ecommerce.model;
+package com.example.ecommerce.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

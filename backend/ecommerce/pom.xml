@@ -37,7 +37,14 @@
     <artifactId>hibernate-validator</artifactId>
     <version>8.0.0.Final</version>
 </dependency>
-
+	<!-- org.json for JSONObject -->
+	<!-- https://mvnrepository.com/artifact/org.json/json -->
+<dependency>
+    <groupId>org.json</groupId>
+    <artifactId>json</artifactId>
+    <version>20220924</version>
+</dependency>
+	
     <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-security</artifactId>
