@@ -3,8 +3,8 @@ package com.example.ecommerce.serializer;
 import java.io.IOException;
 import java.util.Map;
 
+import com.example.ecommerce.entity.Product;
 import com.example.ecommerce.model.Cart2;
-import com.example.ecommerce.model.Product;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
