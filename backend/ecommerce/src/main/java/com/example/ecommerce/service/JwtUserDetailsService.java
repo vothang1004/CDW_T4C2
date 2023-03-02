@@ -45,6 +45,9 @@ public class JwtUserDetailsService implements UserDetailsService {
     		  encodedPassword, new ArrayList<>());
       return userDetails1;
     }
-
+    public User loadUserByEmail(String email) {
+    	User user = userRepository.findByEmail(email);
+    	return user;
+    }
 	
 }
