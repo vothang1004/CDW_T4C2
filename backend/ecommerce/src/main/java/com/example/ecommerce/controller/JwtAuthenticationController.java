@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.ecommerce.entity.User;
 import com.example.ecommerce.model.JwtRequest;
 import com.example.ecommerce.model.JwtResponse;
 import com.example.ecommerce.service.JwtTokenUtil;
@@ -39,10 +39,10 @@ public class JwtAuthenticationController {
         
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(authenticationRequest.getEmail());
-
+        
         final String token = jwtTokenUtil.generateToken(userDetails);
-       
-        return ResponseEntity.ok(new JwtResponse(token));
+        final User user = userDetailsService.loadUserByEmail(authenticationRequest.getEmail());
+        return ResponseEntity.ok(new JwtResponse(token,user));
     }
 
     private void authenticate(String email, String password) throws Exception {
