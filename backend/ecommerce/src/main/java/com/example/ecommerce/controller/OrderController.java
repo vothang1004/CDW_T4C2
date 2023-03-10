@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 //import org.springframework.data.domain.jaxb.SpringDataJaxb.OrderDto;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ecommerce.dto.OrderDetailDto;
 import com.example.ecommerce.dto.OrderDto;
-import com.example.ecommerce.dto.PaymentDto;
 import com.example.ecommerce.entity.Order;
 import com.example.ecommerce.entity.OrderDetail;
 import com.example.ecommerce.entity.Product;
@@ -24,7 +23,7 @@ import com.example.ecommerce.entity.User;
 import com.example.ecommerce.service.JwtTokenUtil;
 import com.example.ecommerce.service.OrderDetailService;
 import com.example.ecommerce.service.OrderService;
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
