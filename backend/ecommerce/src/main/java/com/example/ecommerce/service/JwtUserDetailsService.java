@@ -23,26 +23,28 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        System.out.println("runme");
+//        System.out.println("runme");
     	User user = userRepository.findByEmail(email);
-        System.out.println("user database: "+user);
+//        System.out.println("user database: "+user);
         if (user == null) {
             throw new UsernameNotFoundException("User not found with email: " + email);
         }
-      System.out.println("user: "+user.toString());
+//      System.out.println("user: "+user.toString());
       String encodedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
       Map<String, Object> userDetails = new HashMap<>();
       userDetails.put("id", user.getId());
       userDetails.put("username", user.getUsername());
       userDetails.put("email", user.getEmail());
 //      String java = "hello";
-      org.springframework.security.core.userdetails.User u = new org.springframework.security.core.userdetails.User(user.getUsername(), encodedPassword,
+//      org.springframework.security.core.userdetails.User u = new org.springframework.security.core.userdetails.User(user.getUsername(), encodedPassword,
+//              new ArrayList<>());
+      org.springframework.security.core.userdetails.User u = new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
               new ArrayList<>());
-      System.out.println("user: "+u.getPassword());
+//      System.out.println("user password from database : "+u.getPassword());
 //        return u;
       // You can add additional user details here
       JwtUserDetails userDetails1 = new JwtUserDetails(user.getId(), user.getEmail(), user.getEmail(),
-    		  encodedPassword, new ArrayList<>());
+    		  user.getPassword(), new ArrayList<>());
       return userDetails1;
     }
     public User loadUserByEmail(String email) {

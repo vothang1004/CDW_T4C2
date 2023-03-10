@@ -51,16 +51,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return super.authenticationManagerBean();
 	}
 
-
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		// We don't need CSRF for this example
 		httpSecurity.csrf().disable()
 				// authenticate this particular request
 				.authorizeRequests().antMatchers(HttpMethod.POST, "/authenticate").permitAll()
-				 // allow access to /users without authentication
+				// allow access to /users without authentication
 //	            .antMatchers(HttpMethod.GET, "/users").permitAll()
-	            .antMatchers(HttpMethod.POST, "/users/register").permitAll()
+				.antMatchers(HttpMethod.POST, "/users/register").permitAll()
+				.antMatchers(HttpMethod.POST,"/users/forgot-password").permitAll()
+				.antMatchers(HttpMethod.GET,"/users/reset-password").permitAll()
+				.antMatchers(HttpMethod.POST,"/users/reset-password/**").permitAll()
+				.antMatchers(HttpMethod.GET, "/products/search").permitAll()
+				.antMatchers(HttpMethod.GET, "/products/{product_id}/products").permitAll()
+				.antMatchers(HttpMethod.GET, "/products/latest").permitAll()
+				.antMatchers(HttpMethod.GET, "/products/most-viewed-products").permitAll()
+				.antMatchers(HttpMethod.GET, "/products/suggested-products/{product_id}").permitAll()
+				.antMatchers(HttpMethod.GET, "/products/{product_id}/comments").permitAll()
+				.antMatchers(HttpMethod.GET, "/products/{product_id}/ratings").permitAll()
+
 				// all other requests need to be authenticated
 				.anyRequest().authenticated().and()
 				// make sure we use stateless session; session won't be used to store user's
@@ -71,7 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// Add a filter to validate the tokens with every request
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 	}
-	
+
 //  @Override
 //  protected void configure(HttpSecurity httpSecurity) throws Exception {
 //      // We don't need CSRF for this example

@@ -28,33 +28,24 @@ public class CartController {
 	private CartService cartService;
 	@Autowired
 	private JwtTokenUtil tokenService;
+
 	@GetMapping
 	public List<Cart2> getAllCarts() {
 		return cartService.getAllCarts();
 	}
+
 	@GetMapping("/listmycard")
 	public Cart2 listMyCard(HttpServletRequest request) {
-	    // Get token from request header
-		System.out.println("run here? 1");
-	    String token = request.getHeader("Authorization");
-	    System.out.println("run here? 2");
-	    if (token == null || !token.startsWith("Bearer ")) {
-//	        throw new UnauthorizedException("Missing or invalid authorization header");
-	    }
-	    System.out.println("run here? 3");
-	    token = token.substring(7);
-	    
-	    // Extract user ID from token
-	    long userId = tokenService.getUserIdFromToken(token);
-	    System.out.println(userId);
-//	    System.out.println("run here? 4");
-	    // Retrieve cards for user
-//	    List<Cart> carts = cartService.getCartById(Long.parseLong(userId));
-	    Cart2 carts = cartService.getCartByUserId(userId);
-	    System.out.println(carts);
-//	    System.out.println("cart: "+carts);
-	    return carts;
+		return getCartfromrequest(request);
 	}
+
+	private Cart2 getCartfromrequest(HttpServletRequest request) {
+		String token = request.getHeader("Authorization");
+		long userId = tokenService.getUserIdFromBearToken(token);
+		Cart2 cart = cartService.getCartByUserId(userId);
+		return cart;
+	}
+
 	@GetMapping("/{id}")
 	public Cart2 getCartById(@PathVariable Long id) {
 		return cartService.getCartById(id);
@@ -81,15 +72,17 @@ public class CartController {
 		cartService.deleteCart(id);
 	}
 
-	@PostMapping("/{cartId}/products")
-	public Cart2 addProductToCart(@PathVariable Long cartId, @RequestBody Product product) {
-		return cartService.addProductToCart(cartId, product);
+	@PostMapping("/products")
+	public Cart2 addProductToCart(HttpServletRequest request, @RequestBody Product product) {
+		Cart2 cart = getCartfromrequest(request);
+		return cartService.addProductToCart(cart.getId(), product);
 	}
 
-	@DeleteMapping("/{cartId}/products/{productId}")
-	public Cart2 removeProductFromCart(@PathVariable Long cartId, @PathVariable Long productId) {
+	@DeleteMapping("/products/{productId}")
+	public Cart2 removeProductFromCart(HttpServletRequest request, @PathVariable Long productId) {
+		Cart2 cart = getCartfromrequest(request);
 		Product product = new Product();
 		product.setId(productId);
-		return cartService.removeProductFromCart(cartId, product);
+		return cartService.removeProductFromCart(cart.getId(), product);
 	}
 }
