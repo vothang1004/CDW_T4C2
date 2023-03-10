@@ -19,64 +19,74 @@ import com.example.ecommerce.enumeration.UserRole;
 @Entity
 @Table(name = "user")
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    @Column(name = "username", nullable = false)
-    private String username;
+	@Column(name = "username", nullable = false)
+	private String username;
 
-    @Column(name = "email", nullable = false)
-    private String email;
+	@Column(name = "email", nullable = false)
+	private String email;
 
-    @Column(name = "password", nullable = false)
-    private String password;
+	@Column(name = "password", nullable = false)
+	private String password;
 
-    @Column(name = "phone_number", nullable = false)
-    private String phoneNumber;
+	@Column(name = "phone_number", nullable = false)
+	private String phoneNumber;
 
-    @Column(name = "active", nullable = false)
-    private Boolean active;
+	@Column(name = "active", nullable = false)
+	private Boolean active;
 
-    @Column(name = "user_role", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private UserRole userRole;
+	@Column(name = "user_role", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private UserRole userRole;
 
-    @Column(name = "dob", nullable = false)
-    private Date dob;
+	@Column(name = "dob", nullable = false)
+	private Date dob;
 
-    @Column(name = "gender", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
+	@Column(name = "gender", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private Gender gender;
 
-    @Column(name = "profile")
-    private String profile;
+	@Column(name = "profile")
+	private String profile;
 
-    @Column(name = "google_id")
-    private String googleId;
+	@Column(name = "google_id")
+	private String googleId;
 
-    @Column(name = "facebook_id")
-    private String facebookId;
+	@Column(name = "facebook_id")
+	private String facebookId;
 
-    @Column(name = "create_date", nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createDate;
+	@Column(name = "create_date", nullable = false, updatable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createDate;
 
-    @Column(name = "last_login_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastLoginDate;
+	@Column(name = "last_login_date")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date lastLoginDate;
+	@Column(name = "reset_password_token")
+	private String resetPasswordToken;
+	// constructors, getters, and setters
 
-    // constructors, getters, and setters
-
-    
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", email=" + email + ", password=" + password
 				+ ", phoneNumber=" + phoneNumber + "]";
 	}
+
+	public String getResetPasswordToken() {
+		return resetPasswordToken;
+	}
+
+	public void setResetPasswordToken(String resetPasswordToken) {
+		this.resetPasswordToken = resetPasswordToken;
+	}
+
 	public User() {
 		// TODO Auto-generated constructor stub
 	}
+
 	public User(Integer id, String username, String email, String password, String phoneNumber, Boolean active,
 			UserRole userRole, Date dob, Gender gender, String profile, String googleId, String facebookId,
 			Date createDate, Date lastLoginDate) {
@@ -95,6 +105,29 @@ public class User {
 		this.facebookId = facebookId;
 		this.createDate = createDate;
 		this.lastLoginDate = lastLoginDate;
+	}
+
+	public User(Integer userId) {
+		// TODO Auto-generated constructor stub
+		this.id = userId;
+	}
+
+	public User(User user) {
+		// TODO Auto-generated constructor stub
+		this.id = user.getId();
+		this.username = user.getUsername();
+		this.email = user.getEmail();
+		this.password = user.getPassword();
+		this.phoneNumber = user.getPhoneNumber();
+		this.active = user.getActive();
+		this.userRole = user.getUserRole();
+		this.dob = user.getDob();
+		this.gender = user.getGender();
+		this.profile = user.getProfile();
+		this.googleId = user.getGoogleId();
+		this.facebookId = user.getFacebookId();
+		this.createDate = user.getCreateDate();
+		this.lastLoginDate = user.getLastLoginDate();
 	}
 
 	public Integer getId() {
@@ -208,5 +241,5 @@ public class User {
 	public void setLastLoginDate(Date lastLoginDate) {
 		this.lastLoginDate = lastLoginDate;
 	}
-	
+
 }

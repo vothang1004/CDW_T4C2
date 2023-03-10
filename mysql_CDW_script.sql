@@ -302,5 +302,13 @@ select * from `order`;
 select * from user;
 select * from product;
 select * from cart;
+select * from carts;
 select * from product_review;
 select * from product_comment;
+-- update user 2 to use cart.
+-- change 10-03-2023
+UPDATE `ecommerce`.`user` SET `password` = '$2a$10$8CdSbs.vQ/onS9q3.sY4JO3Sl.swjEOdncxaNq7XZ8/EBC.YN9cWK' WHERE (`id` = '2');
+UPDATE `ecommerce`.`user` SET `password` = '$2a$10$tSFn.9dJlMq/RlMj3rwVGeGaF0HCS9bNqNxA.qlff9qzzd/QxyVie' WHERE (`id` = '1');
+ALTER TABLE user ADD reset_password_token VARCHAR(255);
+UPDATE `ecommerce`.`user` SET `email` = '19130222@st.hcmuaf.edu.vn' WHERE (`id` = '3');
+-- end 10-03-2023

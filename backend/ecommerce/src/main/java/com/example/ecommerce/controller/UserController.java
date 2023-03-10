@@ -3,6 +3,8 @@ package com.example.ecommerce.controller;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +16,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import com.example.ecommerce.dto.EmailDto;
+import com.example.ecommerce.dto.ResetPasswordRequest;
 import com.example.ecommerce.entity.User;
 import com.example.ecommerce.enumeration.UserRole;
 import com.example.ecommerce.exception.UserRegistrationException;
+import com.example.ecommerce.model.UserNewPassword;
+import com.example.ecommerce.service.JwtTokenUtil;
 import com.example.ecommerce.service.UserService;
 
 @RestController
@@ -28,11 +35,14 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private JwtTokenUtil tokenService;
 
 	@GetMapping
 	public List<User> getAllUsers() {
 		return userService.getAllUsers();
 	}
+
 //	{
 //	    "username": "john_doe",
 //	    "email": "john.doe@example.com",
@@ -46,16 +56,53 @@ public class UserController {
 		System.out.println("run me");
 		try {
 			Date now = new Date();
-	        user.setCreateDate(now);
-	        user.setLastLoginDate(null);
-	        user.setUserRole(UserRole.user);
-	        user.setActive(true);
-	        userService.registerUser(user);
-	        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
-	    } catch (MethodArgumentTypeMismatchException e) {
-	        e.printStackTrace();
-	        throw e;
-	    }
+			user.setCreateDate(now);
+			user.setLastLoginDate(null);
+			user.setUserRole(UserRole.user);
+			user.setActive(true);
+			userService.registerUser(user);
+			return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
+		} catch (MethodArgumentTypeMismatchException e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@PostMapping("/forgot-password")
+	public ResponseEntity<String> forgotPassword(@RequestBody EmailDto emaildto) {
+		String response = userService.forgotpassword(emaildto.getEmail());
+
+		return ResponseEntity.ok(response);
+	}
+
+	@GetMapping("/reset-password")
+	public ResponseEntity<?> showResetPasswordForm(@RequestParam("token") String token) {
+		User user = userService.getUserByResetPasswordToken(token);
+
+		if (user == null) {
+			return ResponseEntity.badRequest().body("Invalid reset password token");
+		}
+
+		// return reset password form view
+		return ResponseEntity.ok("Reset password form view");
+	}
+
+	@PostMapping("/reset-password")
+	public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) {
+		User user = userService.getUserByResetPasswordToken(resetPasswordRequest.getToken());
+
+		if (user == null) {
+			return ResponseEntity.badRequest().body("Invalid reset password token");
+		}
+
+		// update user password
+		user.setPassword(resetPasswordRequest.getPassword());
+		user.setResetPasswordToken(null);
+//		userService.saveUser(user);
+		UserNewPassword p = new UserNewPassword(resetPasswordRequest.getPassword());
+		userService.changePassword(user.getId(), p);
+		// return success message
+		return ResponseEntity.ok("Password reset successful");
 	}
 
 	@ExceptionHandler(UserRegistrationException.class)
@@ -73,9 +120,22 @@ public class UserController {
 		return userService.addUser(user);
 	}
 
-	@PutMapping("/{id}")
-	public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-		return userService.updateUser(id, updatedUser);
+	@PutMapping
+	public User updateUser(HttpServletRequest request, @RequestBody User updatedUser) {
+		return userService.updateUser(getIdUserByRequest(request), updatedUser);
+	}
+
+	public long getIdUserByRequest(HttpServletRequest request) {
+		String token = request.getHeader("Authorization");
+		long userId = tokenService.getUserIdFromBearToken(token);
+		return userId;
+	}
+
+	@PutMapping("/changepassword")
+	public ResponseEntity<String> changePassword(HttpServletRequest request, @RequestBody UserNewPassword newPassword) {
+		long userid = getIdUserByRequest(request);
+		userService.changePassword(userid, newPassword);
+		return new ResponseEntity<String>("change successfully", HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
