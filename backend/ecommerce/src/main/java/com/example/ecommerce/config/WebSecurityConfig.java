@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -70,6 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET, "/products/suggested-products/{product_id}").permitAll()
 				.antMatchers(HttpMethod.GET, "/products/{product_id}/comments").permitAll()
 				.antMatchers(HttpMethod.GET, "/products/{product_id}/ratings").permitAll()
+                .antMatchers(HttpMethod.GET,"/admin/sales/category/**").hasRole("ADMIN")
 
 				// all other requests need to be authenticated
 				.anyRequest().authenticated().and()
@@ -81,7 +84,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// Add a filter to validate the tokens with every request
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 	}
-
+	@Bean
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
+        return roleHierarchy;
+    }
 //  @Override
 //  protected void configure(HttpSecurity httpSecurity) throws Exception {
 //      // We don't need CSRF for this example

@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +20,7 @@ import com.example.ecommerce.entity.Product;
 import com.example.ecommerce.model.Cart2;
 import com.example.ecommerce.service.CartService;
 import com.example.ecommerce.service.JwtTokenUtil;
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/carts")
 public class CartController {
