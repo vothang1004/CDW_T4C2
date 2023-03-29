@@ -302,5 +302,19 @@ select * from `order`;
 select * from user;
 select * from product;
 select * from cart;
+select * from carts;
 select * from product_review;
 select * from product_comment;
+-- update user 2 to use cart.
+-- change 10-03-2023
+UPDATE `ecommerce`.`user` SET `password` = '$2a$10$8CdSbs.vQ/onS9q3.sY4JO3Sl.swjEOdncxaNq7XZ8/EBC.YN9cWK' WHERE (`id` = '2');
+UPDATE `ecommerce`.`user` SET `password` = '$2a$10$tSFn.9dJlMq/RlMj3rwVGeGaF0HCS9bNqNxA.qlff9qzzd/QxyVie' WHERE (`id` = '1');
+UPDATE `ecommerce`.`user` SET `user_role` = 'admin' WHERE (`id` = '3');
+
+ALTER TABLE user ADD reset_password_token VARCHAR(255);
+UPDATE `ecommerce`.`user` SET `email` = '19130222@st.hcmuaf.edu.vn' WHERE (`id` = '3');
+-- end 10-03-2023
+select `order`.* from `order` join order_detail on `order`.id=order_detail.id 
+						join product on order_detail.product_id=product.id
+                        join category on product.category_id = category.id
+                        where month(`order`.order_date) = 2 and year(`order`.order_date)=2023 and `order`.payment_method !='not payment yet';

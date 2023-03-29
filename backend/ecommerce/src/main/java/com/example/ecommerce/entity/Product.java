@@ -19,146 +19,179 @@ import javax.validation.constraints.NotBlank;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "product")
 public class Product {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private Category category;
+//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//    @ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "category_id")
+	private Category category;
 
-    @NotBlank
-    private String name;
+	@NotBlank
+	private String name;
 
-    private String description;
+	private String description;
 
-    @DecimalMin(value = "0.0", inclusive = false)
-    private BigDecimal price;
+	@DecimalMin(value = "0.0", inclusive = false)
+	private BigDecimal price;
 
-    @Min(value = 0)
-    private Integer productStock;
+	@Min(value = 0)
+	private Integer productStock;
 
-    private String linkImage;
+	private String linkImage;
 
-    @Min(value = 0)
-    private Integer view;
+	@Min(value = 0)
+	private Integer view;
 
-    @DecimalMin(value = "0.0")
-    private BigDecimal sale;
+	@DecimalMin(value = "0.0")
+	private BigDecimal sale;
 
-    @CreationTimestamp
-    @Column(name = "create_date")
-    private LocalDateTime createDate;
+	@CreationTimestamp
+	@Column(name = "create_date")
+	private LocalDateTime createDate;
 
-    @UpdateTimestamp
-    @Column(name = "update_date")
-    private LocalDateTime updateDate;
+	@UpdateTimestamp
+	@Column(name = "update_date")
+	private LocalDateTime updateDate;
 
-    public Product() {}
+	public Product() {
+	}
 
-    public Product(Category category, String name, String description, BigDecimal price, Integer productStock,
-                   String linkImage, Integer view, BigDecimal sale) {
-        this.category = category;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.productStock = productStock;
-        this.linkImage = linkImage;
-        this.view = view;
-        this.sale = sale;
-    }
+	public Product(Category category, String name, String description, BigDecimal price, Integer productStock,
+			String linkImage, Integer view, BigDecimal sale) {
+		this.category = category;
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.productStock = productStock;
+		this.linkImage = linkImage;
+		this.view = view;
+		this.sale = sale;
+	}
 
-    // getters and setters
+	// getters and setters
 
-    public Long getId() {
-        return id;
-    }
+	public Product(Long productId) {
+		// TODO Auto-generated constructor stub
+		id = productId;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public Product(Product product) {
+		// TODO Auto-generated constructor stub
+		this.id = product.id;
+		this.category = product.category;
+		this.name = product.name;
+		this.description = product.description;
+		this.price = product.price;
+		this.productStock = product.productStock;
+		this.linkImage = product.linkImage;
+		this.view = product.view;
+		this.sale = product.sale;
+		this.createDate = product.createDate;
+		this.updateDate = product.updateDate;
+	}
 
-    public Category getCategory() {
-        return category;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setCategory(Category category) {
-        this.category = category;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public Category getCategory() {
+		return category;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setCategory(Category category) {
+		this.category = category;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public BigDecimal getPrice() {
-        return price;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public Integer getProductStock() {
-        return productStock;
-    }
+	public BigDecimal getPrice() {
+		return price;
+	}
 
-    public void setProductStock(Integer productStock) {
-        this.productStock = productStock;
-    }
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
 
-    public String getLinkImage() {
-        return linkImage;
-    }
+	public Integer getProductStock() {
+		return productStock;
+	}
 
-    public void setLinkImage(String linkImage) {
-        this.linkImage = linkImage;
-    }
+	public void setProductStock(Integer productStock) {
+		this.productStock = productStock;
+	}
 
-    public Integer getView() {
-        return view;
-    }
+	public String getLinkImage() {
+		return linkImage;
+	}
 
-    public void setView(Integer view) {
-        this.view = view;
-    }
+	public void setLinkImage(String linkImage) {
+		this.linkImage = linkImage;
+	}
 
-    public BigDecimal getSale() {
-        return sale;
-    }
+	public Integer getView() {
+		return view;
+	}
 
-    public void setSale(BigDecimal sale) {
-        this.sale = sale;
-    }
+	public void setView(Integer view) {
+		this.view = view;
+	}
 
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
+	public BigDecimal getSale() {
+		return sale;
+	}
 
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
-    }
+	public void setSale(BigDecimal sale) {
+		this.sale = sale;
+	}
 
-    public LocalDateTime getUpdateDate() {
-        return updateDate;
-    }
+	public LocalDateTime getCreateDate() {
+		return createDate;
+	}
 
-    public void setUpdateDate(LocalDateTime updateDate) {
-        this.updateDate = updateDate;
-    }
+	public void setCreateDate(LocalDateTime createDate) {
+		this.createDate = createDate;
+	}
+
+	public LocalDateTime getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(LocalDateTime updateDate) {
+		this.updateDate = updateDate;
+	}
+
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", category=" + category + ", name=" + name + ", description=" + description
+				+ ", price=" + price + ", productStock=" + productStock + ", linkImage=" + linkImage + ", view=" + view
+				+ ", sale=" + sale + ", createDate=" + createDate + ", updateDate=" + updateDate + "]";
+	}
+
 }
