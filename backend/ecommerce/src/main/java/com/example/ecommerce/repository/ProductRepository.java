@@ -19,5 +19,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findAll(Pageable pageable);
 
 	Page<Product> findByIsBestSelling(boolean isBestSelling, PageRequest of);
+	Page<Product> findByIsBestSelling(boolean isBestSelling, Pageable of);
+
 
 }
