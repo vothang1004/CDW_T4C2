@@ -54,9 +54,16 @@ public class ProductController {
 
 	@GetMapping
 	public Page<Product> showProductsPage(@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int limit,
-			@RequestParam(defaultValue = "false") boolean isBestSelling) {
-		Page<Product> productPage = productService.productPage(page, limit,isBestSelling);
+			@RequestParam(defaultValue = "10") int limit, 
+			@RequestParam(defaultValue = "false") boolean isBestSelling,
+			@RequestParam(defaultValue = "none") String sortBy,
+			@RequestParam(defaultValue = "asc") String sortDir) {
+		Page<Product> productPage;
+		if (sortBy.equalsIgnoreCase("none")) {
+			productPage = productService.productPage(page, limit, isBestSelling);
+		} else
+			productPage = productService.productPage(page, limit, isBestSelling, sortBy, sortDir);
+
 		return productPage;
 	}
 
