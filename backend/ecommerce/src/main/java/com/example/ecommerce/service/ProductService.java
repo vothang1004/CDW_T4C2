@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 //import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 //import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Sort;
 import org.springframework.data.domain.PageRequest;
@@ -84,5 +85,14 @@ public class ProductService {
 		Pageable pageable = PageRequest.of(0, 10, Sort.by("view").descending());
 		return productRepository.findByCategory(category, pageable).getContent();
 	}
+
+	public Page<Product> productPage(int page, int max) {
+		Page<Product> productPage = productRepository.findAll(PageRequest.of(page, max));
+		return productPage;
+	}
 	
+	public Page<Product> productPage(int page, int max,boolean isBestSelling) {
+		Page<Product> productPage = productRepository.findByIsBestSelling(isBestSelling,PageRequest.of(page, max));
+		return productPage;
+	}
 }

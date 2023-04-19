@@ -61,6 +61,8 @@ public class Product {
 	@UpdateTimestamp
 	@Column(name = "update_date")
 	private LocalDateTime updateDate;
+	@Column(name = "is_best_selling", nullable = false, columnDefinition = "BIT(1) default 0")
+	private boolean isBestSelling;
 
 	public Product() {
 	}
@@ -97,6 +99,14 @@ public class Product {
 		this.sale = product.sale;
 		this.createDate = product.createDate;
 		this.updateDate = product.updateDate;
+	}
+
+	public boolean isBestSelling() {
+		return isBestSelling;
+	}
+
+	public void setBestSelling(boolean isBestSelling) {
+		this.isBestSelling = isBestSelling;
 	}
 
 	public Long getId() {

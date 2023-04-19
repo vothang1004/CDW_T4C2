@@ -53,7 +53,7 @@ public class UserService {
 		String token = UUID.randomUUID().toString();
 		user.setResetPasswordToken(token);
 		userRepository.save(user);
-		String resetPasswordLink = getBaseUrl() + "users/reset-password?token=" + token;
+		String resetPasswordLink ="refresh code:" + token;
 
 		try {
 			String subject = "reset password chuyendeweb project";
