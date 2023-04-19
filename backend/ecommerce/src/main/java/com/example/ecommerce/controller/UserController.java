@@ -85,7 +85,7 @@ public class UserController {
 		}
 
 		// return reset password form view
-		return ResponseEntity.ok("Reset password form view");
+		return ResponseEntity.ok("Reset password form view - depricated from 16/04/2023");
 	}
 
 	@PostMapping("/reset-password")
