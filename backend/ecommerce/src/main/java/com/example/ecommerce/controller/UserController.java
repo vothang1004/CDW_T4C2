@@ -129,7 +129,7 @@ public class UserController {
 	public long getIdUserByRequest(HttpServletRequest request) {
 		String token = request.getHeader("Authorization");
 		long userId = tokenService.getUserIdFromBearToken(token);
-		return userId;
+		return userId; 
 	}
 
 	@PutMapping("/changepassword")
