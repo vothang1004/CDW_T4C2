@@ -2,11 +2,12 @@ package com.example.ecommerce.controller;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 //import org.springframework.format.annotation.DateTimeFormat;
 //import org.springframework.format.annotation.DateTimeFormat;
 //import org.springframework.format.annotation.DateTimeFormat;
@@ -42,20 +43,22 @@ public class AdminController {
 		return ResponseEntity.ok(categories);
 	}
 
-//    @GetMapping("/revenue")
-//    public ResponseEntity<?> getRevenue(@RequestParam("start_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-//                                         @RequestParam("end_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+    @GetMapping("/revenue")
+    public ResponseEntity<?> getRevenue(@RequestParam("start_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                         @RequestParam("end_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
 //        double revenue = orderService.calculateRevenue(startDate, endDate);
-//        return ResponseEntity.ok(revenue);
-//    }
-	@GetMapping("/revenue")
-	public ResponseEntity<?> getRevenue(@RequestParam("start_date") String startDateStr,
-			@RequestParam("end_date") String endDateStr) {
-		LocalDate startDate = LocalDate.parse(startDateStr);
-		LocalDate endDate = LocalDate.parse(endDateStr);
-		BigDecimal revenue = orderService.calculateRevenue(startDate, endDate);
-		return ResponseEntity.ok(revenue);
-	}
+    	
+        BigDecimal revenue = orderService.calculateRevenue(startDate.atStartOfDay(), endDate.atStartOfDay());
+        return ResponseEntity.ok(revenue);
+    }
+//	@GetMapping("/revenue")
+//	public ResponseEntity<?> getRevenue(@RequestParam("start_date") String startDateStr,
+//			@RequestParam("end_date") String endDateStr) {
+//		LocalDate startDate = LocalDate.parse(startDateStr);
+//		LocalDate endDate = LocalDate.parse(endDateStr);
+//		BigDecimal revenue = orderService.calculateRevenue(startDate, endDate);
+//		return ResponseEntity.ok(revenue);
+//	}
 
 //	@GetMapping("/revenue")
 //	public ResponseEntity<?> getRevenue(@RequestParam("start_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,

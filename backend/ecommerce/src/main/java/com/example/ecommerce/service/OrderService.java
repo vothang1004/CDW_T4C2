@@ -149,8 +149,9 @@ public class OrderService {
 
 	}
 
-	public BigDecimal calculateRevenue(LocalDate startDate, LocalDate endDate) {
+	public BigDecimal calculateRevenue(LocalDateTime startDate, LocalDateTime endDate) {
 	    BigDecimal revenue = BigDecimal.ZERO;
+//	    System.out.println("run he"+startDate);
 	    List<Order> orders = orderRepository.findByOrderDateBetween(startDate, endDate);
 	    for (Order order : orders) {
 	        revenue = revenue.add(order.getTotalPrice());
