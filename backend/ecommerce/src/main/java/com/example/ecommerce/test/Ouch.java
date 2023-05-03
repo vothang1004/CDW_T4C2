@@ -4,7 +4,7 @@ public  class Ouch {
 	static int ouch = 7;
 
 	public static void main(String[] args) {
-		new Ouch().go(ouch);
+//		new Ouch().go(ouch);
 		System.out.print(" " + ouch);
 		Integer v = 7;
 		Integer m = 8;
