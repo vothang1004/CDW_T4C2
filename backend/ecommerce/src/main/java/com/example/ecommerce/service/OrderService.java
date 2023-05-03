@@ -3,7 +3,8 @@ package com.example.ecommerce.service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
+//import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +28,7 @@ import com.example.ecommerce.repository.ProductRepository;
 
 @Service
 public class OrderService {
-
+	
 	@Autowired
 	private OrderRepository orderRepository;
 
@@ -97,7 +98,9 @@ public class OrderService {
 		for (OrderDetail detail : order.getOrderdetails()) {
 			BigDecimal price = detail.getPrice().multiply(BigDecimal.valueOf(detail.getQuantity()));
 			totalPrice = totalPrice.add(price);
-			detail.setCreateDate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+//			detail.setCreateDate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+			detail.setCreateDate(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)));
+
 			detail.setUpdateDate(detail.getCreateDate());
 		}
 		order.setTotalPrice(totalPrice);

@@ -8,10 +8,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
+// depredicated - not use this class
 @Entity
 @Table(name = "cart")
-public class Cart {
+public class Cart_depredicated {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +30,9 @@ public class Cart {
 
     // constructors
 
-    public Cart() {}
+    public Cart_depredicated() {}
 
-    public Cart(User user, Product product, int amount) {
+    public Cart_depredicated(User user, Product product, int amount) {
         this.user = user;
         this.product = product;
         this.amount = amount;

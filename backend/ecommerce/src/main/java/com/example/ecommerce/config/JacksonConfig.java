@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.example.ecommerce.deserializer.CartJsonDeserializer;
-import com.example.ecommerce.model.Cart2;
+import com.example.ecommerce.entity.Cart2;
 import com.example.ecommerce.serializer.CartSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
