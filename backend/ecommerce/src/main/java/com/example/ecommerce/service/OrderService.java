@@ -162,4 +162,9 @@ public class OrderService {
 	    return revenue;
 	}
 
+	public Order getOrderByUser(User user, Long id) {
+		// TODO Auto-generated method stub
+		return orderRepository.findByUserAndId(user,id);
+	}
+
 }
