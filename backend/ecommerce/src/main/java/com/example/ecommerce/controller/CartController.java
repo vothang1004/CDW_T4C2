@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.ecommerce.entity.Cart2;
 import com.example.ecommerce.entity.Product;
-import com.example.ecommerce.model.Cart2;
 import com.example.ecommerce.service.CartService;
 import com.example.ecommerce.service.JwtTokenUtil;
 @CrossOrigin(origins = "http://localhost:3000")

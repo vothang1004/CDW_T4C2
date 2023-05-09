@@ -19,21 +19,23 @@ public class TestClass {
 //		userDetails.put("id", new Object());
 //		userDetails.put("username", new Object());
 //		userDetails.put("email", new Object());
-		String password = "mypassword";
-		String encodedPassword1 = new BCryptPasswordEncoder().encode(password);
-		System.out.println(encodedPassword1);
-		String encodedPassword2 = new BCryptPasswordEncoder().encode(password);
-		System.out.println(encodedPassword2);
-		boolean check = new BCryptPasswordEncoder().matches(password, encodedPassword1);
-		System.out.println(check);
+//		String password = "mypassword";
+//		String encodedPassword1 = new BCryptPasswordEncoder().encode(password);
+//		System.out.println(encodedPassword1);
+//		String encodedPassword2 = new BCryptPasswordEncoder().encode(password);
+//		System.out.println(encodedPassword2);
+//		boolean check = new BCryptPasswordEncoder().matches(password, encodedPassword1);
+//		System.out.println(check);
 //		for (int i = 0; i < 10; i++) {
 //			String encodedPassword = new BCryptPasswordEncoder().encode(password);
 //			System.out.println(encodedPassword);
 //		}
-		
+
 	}
 }
-
+class ja {
+	
+}
 //@Service
 //public class HelloService {
 //	String welcome;

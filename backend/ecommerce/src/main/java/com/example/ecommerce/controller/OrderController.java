@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 //import org.springframework.data.domain.jaxb.SpringDataJaxb.OrderDto;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +42,12 @@ public class OrderController {
 		List<Order> orders = orderService.getOrderByUser(user);
 		return orders.stream().map(this::convertToDto).collect(Collectors.toList());
 	}
-
+	@GetMapping("/{id}")
+	public OrderDto getOrderByToken(HttpServletRequest request,@PathVariable Long id) {
+		User user = tokenService.getUserByRequest(request);
+		Order orders = orderService.getOrderByUser(user,id);
+		return convertToDto(orders);
+	}
 	/*
 	 * standard api for order controller create { "shippingAddress": "123 Main St",
 	 * "billingAddress": "456 Elm St", "paymentMethod": "Credit Card", "notes":

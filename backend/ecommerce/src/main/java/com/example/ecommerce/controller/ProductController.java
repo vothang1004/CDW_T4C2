@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,6 +31,7 @@ import com.example.ecommerce.service.JwtTokenUtil;
 import com.example.ecommerce.service.ProductCommentService;
 import com.example.ecommerce.service.ProductReviewService;
 import com.example.ecommerce.service.ProductService;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/products")
@@ -45,9 +47,24 @@ public class ProductController {
 	@Autowired
 	private ProductCommentService productCommentService;
 
+//	@GetMapping
+//	public List<Product> getAllProducts() {
+//		return productService.getAllProducts();
+//	}
+
 	@GetMapping
-	public List<Product> getAllProducts() {
-		return productService.getAllProducts();
+	public Page<Product> showProductsPage(@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int limit, 
+			@RequestParam(defaultValue = "false") boolean isBestSelling,
+			@RequestParam(defaultValue = "none") String sortBy,
+			@RequestParam(defaultValue = "asc") String sortDir) {
+		Page<Product> productPage;
+		if (sortBy.equalsIgnoreCase("none")) {
+			productPage = productService.productPage(page, limit, isBestSelling);
+		} else
+			productPage = productService.productPage(page, limit, isBestSelling, sortBy, sortDir);
+
+		return productPage;
 	}
 
 	// usable
@@ -80,23 +97,24 @@ public class ProductController {
 		List<Product> suggestedProducts = productService.getSuggestedProducts(productId);
 		return new ResponseEntity<>(suggestedProducts, HttpStatus.OK);
 	}
+
 	@GetMapping("/{productId}/ratings")
 	public ResponseEntity<List<ProductReviewDto>> getProductRatings(@PathVariable Long productId) {
-		List<ProductReviewDto> productReviews = productReviewService.findByProductId(productId)
-			    .stream()
-			    .map(this::EntityToDto)
-			    .collect(Collectors.toList());
+		List<ProductReviewDto> productReviews = productReviewService.findByProductId(productId).stream()
+				.map(this::EntityToDto).collect(Collectors.toList());
 		return ResponseEntity.ok(productReviews);
 	}
+
 	public ProductReviewDto EntityToDto(ProductReview productReview) {
-	    ProductReviewDto productReviewDto = new ProductReviewDto();
-	    productReviewDto.setId(productReview.getId());
-	    productReviewDto.setUsername(productReview.getUser().getUsername());
-	    productReviewDto.setProductId(productReview.getProduct().getId());
-	    productReviewDto.setRating(productReview.getRating());
-	    productReviewDto.setCreateDate(productReview.getCreateDate());
-	    return productReviewDto;
+		ProductReviewDto productReviewDto = new ProductReviewDto();
+		productReviewDto.setId(productReview.getId());
+		productReviewDto.setUsername(productReview.getUser().getUsername());
+		productReviewDto.setProductId(productReview.getProduct().getId());
+		productReviewDto.setRating(productReview.getRating());
+		productReviewDto.setCreateDate(productReview.getCreateDate());
+		return productReviewDto;
 	}
+
 	@PostMapping("/{productId}/ratings")
 	public ResponseEntity<String> addProductRating(HttpServletRequest request, @PathVariable Long productId,
 			@RequestBody Map<String, Integer> requestBody) {
@@ -129,19 +147,17 @@ public class ProductController {
 		productCommentService.addProductComment(productId, productComment, user);
 		return new ResponseEntity<>("Comment added successfully.", HttpStatus.CREATED);
 	}
+
 	@PostMapping("/{productId}/comments/{commentId}/reply")
-	public ResponseEntity<ProductCommentDto> replyToComment(
-			HttpServletRequest request,
-	        @PathVariable Long productId,
-	        @PathVariable Long commentId,
-	        @RequestBody ProductCommentDto productCommentDto) {
+	public ResponseEntity<ProductCommentDto> replyToComment(HttpServletRequest request, @PathVariable Long productId,
+			@PathVariable Long commentId, @RequestBody ProductCommentDto productCommentDto) {
 
 //	    // Find the parent comment
 //	    ProductComment parentComment = productCommentService.getProductCommentById(commentId);
 //	    if (parentComment == null) {
 //	        return ResponseEntity.notFound().build();
 //	    }
-	    User user = tokenService.getUserByRequest(request);
+		User user = tokenService.getUserByRequest(request);
 //	    // Create the new child comment
 //	    ProductComment childComment = new ProductComment();
 //	    childComment.setProduct(parentComment.getProduct());
@@ -155,9 +171,11 @@ public class ProductController {
 //
 //	    // Convert the saved comment to a DTO and return it in the response
 //	    ProductCommentDto savedCommentDto = productCommentMapper.toProductCommentDto(savedComment);
-		ProductCommentDto savedCommentDto = productCommentService.replyProductComment(productId,commentId, productCommentDto, user);
-	    return ResponseEntity.ok(savedCommentDto);
+		ProductCommentDto savedCommentDto = productCommentService.replyProductComment(productId, commentId,
+				productCommentDto, user);
+		return ResponseEntity.ok(savedCommentDto);
 	}
+
 	@GetMapping("/{productId}/comments")
 	public ResponseEntity<List<ProductCommentDto>> getProductComments(@PathVariable Long productId) {
 		List<ProductCommentDto> comments = productCommentService.getCommentsForProduct(productId);

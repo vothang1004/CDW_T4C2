@@ -12,12 +12,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.example.ecommerce.component.JwtAuthenticationEntryPoint;
 import com.example.ecommerce.component.JwtRequestFilter;
+import com.example.ecommerce.enumeration.UserRole;
 import com.example.ecommerce.service.JwtUserDetailsService;
 
 @Configuration
@@ -55,24 +57,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		// We don't need CSRF for this example
+		// We don't need CSRF for this
 		httpSecurity.csrf().disable()
 				// authenticate this particular request
 				.authorizeRequests().antMatchers(HttpMethod.POST, "/authenticate").permitAll()
 				// allow access to /users without authentication
 //	            .antMatchers(HttpMethod.GET, "/users").permitAll()
 				.antMatchers(HttpMethod.POST, "/users/register").permitAll()
-				.antMatchers(HttpMethod.POST,"/users/forgot-password").permitAll()
-				.antMatchers(HttpMethod.GET,"/users/reset-password").permitAll()
-				.antMatchers(HttpMethod.POST,"/users/reset-password/**").permitAll()
-				.antMatchers(HttpMethod.GET, "/products/search").permitAll()
-				.antMatchers(HttpMethod.GET, "/products/{product_id}/products").permitAll()
+				.antMatchers(HttpMethod.POST, "/users/forgot-password").permitAll()
+				.antMatchers(HttpMethod.GET, "/users/reset-password").permitAll()
+				.antMatchers(HttpMethod.POST, "/users/reset-password/**").permitAll()
+				.antMatchers(HttpMethod.GET, "/products").permitAll().antMatchers(HttpMethod.GET, "/products/search")
+				.permitAll().antMatchers(HttpMethod.GET, "/products/{product_id}/products").permitAll()
 				.antMatchers(HttpMethod.GET, "/products/latest").permitAll()
 				.antMatchers(HttpMethod.GET, "/products/most-viewed-products").permitAll()
 				.antMatchers(HttpMethod.GET, "/products/suggested-products/{product_id}").permitAll()
 				.antMatchers(HttpMethod.GET, "/products/{product_id}/comments").permitAll()
 				.antMatchers(HttpMethod.GET, "/products/{product_id}/ratings").permitAll()
-                .antMatchers(HttpMethod.GET,"/admin/sales/category/**").hasRole("ADMIN")
+				.antMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
 
 				// all other requests need to be authenticated
 				.anyRequest().authenticated().and()
@@ -84,12 +86,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// Add a filter to validate the tokens with every request
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 	}
-	@Bean
-    public RoleHierarchy roleHierarchy() {
-        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
-        return roleHierarchy;
-    }
+
+//	@Bean
+//	public RoleHierarchy roleHierarchy() {
+//		RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+//		roleHierarchy.setHierarchy(UserRole.admin.name() + " > " + UserRole.user.name());
+//		return roleHierarchy;
+//	}
 //  @Override
 //  protected void configure(HttpSecurity httpSecurity) throws Exception {
 //      // We don't need CSRF for this example
