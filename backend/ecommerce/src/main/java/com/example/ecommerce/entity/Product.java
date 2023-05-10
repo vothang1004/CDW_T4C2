@@ -50,7 +50,7 @@ public class Product {
 
 	@Min(value = 0)
 	private Integer view;
-
+	
 	@DecimalMin(value = "0.0")
 	private BigDecimal sale;
 

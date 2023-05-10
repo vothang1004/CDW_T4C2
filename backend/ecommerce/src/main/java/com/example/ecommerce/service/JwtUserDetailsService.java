@@ -30,10 +30,11 @@ public class JwtUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 //        System.out.println("runme");
 		User user = userRepository.findByEmail(email);
-		System.out.println("user database: " + user.getUserRole());
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found with email: " + email);
 		}
+		System.out.println("user database: " + user.getUserRole());
+
 //      System.out.println("user: "+user.toString());
 		String encodedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
 		Map<String, Object> userDetails = new HashMap<>();
