@@ -85,6 +85,7 @@ public class User {
 
 	public User() {
 		// TODO Auto-generated constructor stub
+		this.dob = new Date();
 	}
 
 	public User(Integer id, String username, String email, String password, String phoneNumber, Boolean active,

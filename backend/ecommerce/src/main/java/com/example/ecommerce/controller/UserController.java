@@ -62,6 +62,7 @@ public class UserController {
 			user.setUserRole(UserRole.user);
 			user.setActive(true);
 			userService.registerUser(user);
+			
 			return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
 		} catch (MethodArgumentTypeMismatchException e) {
 			e.printStackTrace();
