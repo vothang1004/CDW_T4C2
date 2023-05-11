@@ -235,7 +235,7 @@ VALUES
 (4, 'Sony Alpha a6400 Mirrorless Camera', '24.2MP APS-C Exmor CMOS Sensor, BIONZ X Image Processor, 4K UHD Video Recording', 899.99, 12, null, ROUND(RAND() * (400 - 40) + 40), 0, NOW(), NOW()),
 (4, 'Nikon D3500 DSLR Camera', '24.2MP DX-Format CMOS Sensor, EXPEED 4 Image Processor, Full HD 1080p Video Recording', 449.99, 15, null, ROUND(RAND() * (400 - 40) + 40), 0, NOW(), NOW()),
 (4, 'Fujifilm X-T3 Mirrorless Camera', '26.1MP APS-C X-Trans CMOS 4 Sensor, X-Processor 4 Image Processor, 4K UHD Video Recording', 1399.99, 5, null, ROUND(RAND() * (400 - 40) + 40), 0, NOW(), NOW());
-select * from product;
+
 INSERT INTO cart (user_id, product_id, amount)
 VALUES 
     (1, 3, 2),
@@ -300,25 +300,22 @@ VALUES (@order_id, 4, 2, 199.99, 0, 19.99),
 select * from order_detail;
 select * from `order`;
 select * from user;
-select * from product;
+select * from prproductoduct;
 select * from cart;
 select * from carts;
 select * from product_review;
 select * from product_comment;
 -- update user 2 to use cart.
--- change 10-03-2023
-UPDATE `ecommerce`.`user` SET `password` = '$2a$10$8CdSbs.vQ/onS9q3.sY4JO3Sl.swjEOdncxaNq7XZ8/EBC.YN9cWK' WHERE (`id` = '2');
-UPDATE `ecommerce`.`user` SET `password` = '$2a$10$tSFn.9dJlMq/RlMj3rwVGeGaF0HCS9bNqNxA.qlff9qzzd/QxyVie' WHERE (`id` = '1');
-UPDATE `ecommerce`.`user` SET `user_role` = 'admin' WHERE (`id` = '3');
-
+-- change 10-03-2023 - change all password to 123456
+UPDATE `ecommerce`.`user` SET `password` = '$2a$10$te2j0GBuYFjBoHIIY78ETeRUwGlUynC/DLPBxXi8AKoM.QXvseExe';
+UPDATE `ecommerce`.`user` SET `user_role` = 'admin' WHERE (user.email = "johndoe@example.com");
+select * from user;
 ALTER TABLE user ADD reset_password_token VARCHAR(255);
-UPDATE `ecommerce`.`user` SET `email` = '19130222@st.hcmuaf.edu.vn' WHERE (`id` = '3');
-
 -- end 10-03-2023
-select `order`.* from `order` join order_detail on `order`.id=order_detail.id 
-						join product on order_detail.product_id=product.id
-                        join category on product.category_id = category.id
-                        where month(`order`.order_date) = 2 and year(`order`.order_date)=2023 and `order`.payment_method !='not payment yet';
+-- select `order`.* from `order` join order_detail on `order`.id=order_detail.id 
+-- 						join product on order_detail.product_id=product.id
+--                         join category on product.category_id = category.id
+--                         where month(`order`.order_date) = 2 and year(`order`.order_date)=2023 and `order`.payment_method !='not payment yet';
 -- update 19-04-2023
 ALTER TABLE product ADD is_best_selling BIT NOT NULL DEFAULT 0;
 UPDATE `ecommerce`.`product` SET `is_best_selling` = 1 WHERE (`id` = '3');

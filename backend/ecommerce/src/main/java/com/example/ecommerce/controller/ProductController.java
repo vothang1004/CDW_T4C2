@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ecommerce.dto.ProductCommentDto;
 import com.example.ecommerce.dto.ProductReviewDto;
+import com.example.ecommerce.entity.Category;
 import com.example.ecommerce.entity.Product;
 import com.example.ecommerce.entity.ProductReview;
 import com.example.ecommerce.entity.User;
@@ -54,22 +55,43 @@ public class ProductController {
 
 	@GetMapping
 	public Page<Product> showProductsPage(@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int limit, 
-			@RequestParam(defaultValue = "false") boolean isBestSelling,
-			@RequestParam(defaultValue = "none") String sortBy,
-			@RequestParam(defaultValue = "asc") String sortDir) {
+			@RequestParam(defaultValue = "10") int limit, @RequestParam(defaultValue = "none") String isBestSelling,
+			@RequestParam(defaultValue = "none") String sortBy, @RequestParam(defaultValue = "asc") String sortDir,
+			@RequestParam(defaultValue = "") String search, @RequestParam(defaultValue = "-1") int categoryId) {
 		Page<Product> productPage;
-		if (sortBy.equalsIgnoreCase("none")) {
-			productPage = productService.productPage(page, limit, isBestSelling);
-		} else
-			productPage = productService.productPage(page, limit, isBestSelling, sortBy, sortDir);
-
+		Category c = null;
+		if (categoryId > -1) {
+			c = new Category();
+			c.setId(categoryId);
+		}
+		Boolean isBest = null;
+		if (!isBestSelling.equals("none"))
+			isBest = Boolean.valueOf(isBestSelling);
+		productPage = productService.productPage(search, c, isBest, page, limit, sortBy, sortDir);
 		return productPage;
 	}
 
+	@GetMapping("/test")
+	public List<Product> m(@RequestParam(defaultValue = "") String search,
+			@RequestParam(defaultValue = "-1") int categoryId,
+			@RequestParam(defaultValue = "none") String isBestSelling) {
+
+		Category c = null;
+		if (categoryId > -1) {
+			c = new Category();
+			c.setId(categoryId);
+		}
+		Boolean isBest = null;
+		if (!isBestSelling.equals("none"))
+			isBest = Boolean.valueOf(isBestSelling);
+		System.out.println("isbest: " + isBest);
+		return productService.productPage(search, c, isBest);
+	}
+
 	// usable
-	@GetMapping("/{id}/products")
+	@GetMapping("/{id}")
 	public Product getProductById(@PathVariable("id") Long id) {
+		productService.incrementViewCount(id);
 		return productService.getProductById(id);
 	}
 
@@ -119,7 +141,9 @@ public class ProductController {
 	public ResponseEntity<String> addProductRating(HttpServletRequest request, @PathVariable Long productId,
 			@RequestBody Map<String, Integer> requestBody) {
 		Integer rating = requestBody.get("rating");
-
+		if (rating < 0 || rating > 5) {
+			return new ResponseEntity<String>("must one to five rating", HttpStatus.BAD_REQUEST);
+		}
 		Product product = productService.getProductById(productId);
 
 		if (product == null) {
@@ -183,20 +207,7 @@ public class ProductController {
 	}
 
 	// admin
-	@PostMapping
-	public Product addProduct(@RequestBody Product product) {
-		return productService.addProduct(product);
-	}
-
-	@PutMapping("/{id}")
-	public Product updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
-		return productService.updateProduct(id, product);
-	}
-
-	@DeleteMapping("/{id}")
-	public void deleteProduct(@PathVariable("id") Long id) {
-		productService.deleteProduct(id);
-	}
+	
 	// rating 1 edition
 //	@PostMapping("/{productId}/ratings")
 //	public ResponseEntity<Rating> addRating(@PathVariable Long productId, @RequestBody RatingRequest ratingRequest) {

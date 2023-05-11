@@ -68,12 +68,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET, "/users/reset-password").permitAll()
 				.antMatchers(HttpMethod.POST, "/users/reset-password/**").permitAll()
 				.antMatchers(HttpMethod.GET, "/products").permitAll().antMatchers(HttpMethod.GET, "/products/search")
-				.permitAll().antMatchers(HttpMethod.GET, "/products/{product_id}/products").permitAll()
+				.permitAll().antMatchers(HttpMethod.GET, "/products/{product_id}").permitAll()
 				.antMatchers(HttpMethod.GET, "/products/latest").permitAll()
 				.antMatchers(HttpMethod.GET, "/products/most-viewed-products").permitAll()
 				.antMatchers(HttpMethod.GET, "/products/suggested-products/{product_id}").permitAll()
 				.antMatchers(HttpMethod.GET, "/products/{product_id}/comments").permitAll()
 				.antMatchers(HttpMethod.GET, "/products/{product_id}/ratings").permitAll()
+				.antMatchers(HttpMethod.GET, "/products/test/**").permitAll()
+				.antMatchers(HttpMethod.GET, "/categories/**").permitAll()
 				.antMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
 
 				// all other requests need to be authenticated

@@ -50,7 +50,7 @@ public class Product {
 
 	@Min(value = 0)
 	private Integer view;
-
+	
 	@DecimalMin(value = "0.0")
 	private BigDecimal sale;
 
@@ -78,7 +78,7 @@ public class Product {
 		this.view = view;
 		this.sale = sale;
 	}
-
+	
 	// getters and setters
 
 	public Product(Long productId) {

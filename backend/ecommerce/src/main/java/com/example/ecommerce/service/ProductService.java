@@ -1,5 +1,7 @@
 package com.example.ecommerce.service;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.ecommerce.entity.Category;
 import com.example.ecommerce.entity.Product;
+import com.example.ecommerce.repository.CategoryRepository;
 import com.example.ecommerce.repository.ProductRepository;
 
 @Service
@@ -25,16 +28,28 @@ public class ProductService {
 	@Autowired
 	private ProductRepository productRepository;
 
+	@Autowired
+	private CategoryRepository categoryRepository;
+
+	public void incrementViewCount(long productId) {
+		productRepository.incrementViewCount(productId);
+	}
+
 	public List<Product> getAllProducts() {
 		return productRepository.findAll();
 	}
 
 	public Product getProductById(Long id) {
 		Optional<Product> product = productRepository.findById(id);
+		if (!product.isPresent() || !product.isEmpty()) {
+
+		}
 		return product.orElse(null);
 	}
 
 	public Product addProduct(Product product) {
+		product.setCategory(categoryRepository.findById(product.getCategory().getId()).get());
+		product.setCreateDate(LocalDateTime.now());
 		return productRepository.save(product);
 	}
 
@@ -44,8 +59,15 @@ public class ProductService {
 			return null;
 		}
 		product.setName(updatedProduct.getName());
+		product.setCategory(categoryRepository.findById(updatedProduct.getCategory().getId()).get());
+		product.setProductStock(updatedProduct.getProductStock());
+		product.setLinkImage(updatedProduct.getLinkImage());
+		product.setView(updatedProduct.getView());
+		product.setSale(updatedProduct.getSale());
 		product.setDescription(updatedProduct.getDescription());
 		product.setPrice(updatedProduct.getPrice());
+		product.setBestSelling(updatedProduct.isBestSelling());
+		product.setUpdateDate(LocalDateTime.now());
 		return productRepository.save(product);
 	}
 
@@ -86,28 +108,43 @@ public class ProductService {
 		return productRepository.findByCategory(category, pageable).getContent();
 	}
 
-	public Page<Product> productPage(int page, int max) {
-		Page<Product> productPage = productRepository.findAll(PageRequest.of(page, max));
-		return productPage;
-	}
+//	public Page<Product> productPage(int page, int max) {
+//		Page<Product> productPage = productRepository.findAll(PageRequest.of(page, max));
+//		return productPage;
+//	}
 
-	public Page<Product> productPage(int page, int max, boolean isBestSelling) {
-		Page<Product> productPage = productRepository.findByIsBestSelling(isBestSelling, PageRequest.of(page, max));
-		return productPage;
-	}
-
-	public Page<Product> productPage(int page, int max, boolean isBestSelling, String sortBy, String sortDirection) {
-		Sort.Direction direction; // Sort direction
-		if ("asc".equalsIgnoreCase(sortDirection)) {
-			direction = Sort.Direction.ASC;
-		} else if ("desc".equalsIgnoreCase(sortDirection)) {
-			direction = Sort.Direction.DESC;
-		} else {
-			direction = null; // default, no sorting
+	public Page<Product> productPage(String search, Category category, Boolean isBestSelling, int page, int max,
+			String sortBy, String sortDirection) {
+//		Category category = categoryRepository.findById(categoryId).orElse(null);
+		Pageable pageable = PageRequest.of(page, max);
+		if (!sortBy.equalsIgnoreCase("none")) {
+			Sort.Direction direction; // Sort direction
+			if ("asc".equalsIgnoreCase(sortDirection)) {
+				direction = Sort.Direction.ASC;
+			} else if ("desc".equalsIgnoreCase(sortDirection)) {
+				direction = Sort.Direction.DESC;
+			} else {
+				direction = null; // default, no sorting
+			}
+			pageable = PageRequest.of(page, max, direction, sortBy);
 		}
-		Pageable pageable = PageRequest.of(page, max, direction, sortBy);
+//		if (sortBy.equalsIgnoreCase("none")) {
+//			Page<Product> productPage = productRepository.findBestSellingProducts(isBestSelling,
+//					PageRequest.of(page, max), category, search);
+//			return productPage;
+//		}
+//		System.out.println("SEARCH: " + search);
 		// PageRequest.of(page, max,Sort.by(sortBy))
-		Page<Product> productPage = productRepository.findByIsBestSelling(isBestSelling, pageable);
+		// category,
+		Page<Product> productPage = productRepository.findByCategoryAndNameAndIsBestSelling(search, category,
+				isBestSelling, pageable);
+		return productPage;
+	}
+
+	public List<Product> productPage(String search, Category category, Boolean isBestSelling) {
+//		if(
+		List<Product> productPage = productRepository.finds(search, category, isBestSelling);
+
 		return productPage;
 	}
 }

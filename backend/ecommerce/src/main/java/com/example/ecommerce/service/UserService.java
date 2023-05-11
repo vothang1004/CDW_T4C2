@@ -104,6 +104,7 @@ public class UserService {
 		user.setDob(updatedUser.getDob());
 		user.setGender(updatedUser.getGender());
 		user.setProfile(updatedUser.getProfile());
+		
 		return userRepository.save(user);
 	}
 
