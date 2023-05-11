@@ -78,7 +78,7 @@ public class Product {
 		this.view = view;
 		this.sale = sale;
 	}
-
+	
 	// getters and setters
 
 	public Product(Long productId) {

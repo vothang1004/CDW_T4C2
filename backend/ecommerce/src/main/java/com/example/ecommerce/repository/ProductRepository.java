@@ -44,7 +44,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	Page<Product> findByCategoryAndNameAndIsBestSelling(String keyword, Category category, Boolean isBestSelling, Pageable pageable);
 
 	@Modifying
-	@Transactional
+	@Transactional //everyupdate or delete must be a transaction
 	@Query("UPDATE Product p SET p.view = p.view + 1 WHERE p.id = :productId")
 	void incrementViewCount(@Param("productId") Long productId);
 }

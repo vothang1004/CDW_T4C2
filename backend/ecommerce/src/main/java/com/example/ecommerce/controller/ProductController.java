@@ -207,20 +207,7 @@ public class ProductController {
 	}
 
 	// admin
-	@PostMapping
-	public Product addProduct(@RequestBody Product product) {
-		return productService.addProduct(product);
-	}
-
-	@PutMapping("/{id}")
-	public Product updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
-		return productService.updateProduct(id, product);
-	}
-
-	@DeleteMapping("/{id}")
-	public void deleteProduct(@PathVariable("id") Long id) {
-		productService.deleteProduct(id);
-	}
+	
 	// rating 1 edition
 //	@PostMapping("/{productId}/ratings")
 //	public ResponseEntity<Rating> addRating(@PathVariable Long productId, @RequestBody RatingRequest ratingRequest) {
