@@ -39,10 +39,7 @@ public class UserController {
 	@Autowired
 	private JwtTokenUtil tokenService;
 
-	@GetMapping
-	public List<User> getAllUsers() {
-		return userService.getAllUsers();
-	}
+	
 
 //	{
 //	    "username": "john_doe",

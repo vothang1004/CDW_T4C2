@@ -1,5 +1,7 @@
 package com.example.ecommerce.service;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,9 +30,11 @@ public class ProductService {
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+
 	public void incrementViewCount(long productId) {
 		productRepository.incrementViewCount(productId);
 	}
+
 	public List<Product> getAllProducts() {
 		return productRepository.findAll();
 	}
@@ -44,6 +48,8 @@ public class ProductService {
 	}
 
 	public Product addProduct(Product product) {
+		product.setCategory(categoryRepository.findById(product.getCategory().getId()).get());
+		product.setCreateDate(LocalDateTime.now());
 		return productRepository.save(product);
 	}
 
@@ -53,8 +59,15 @@ public class ProductService {
 			return null;
 		}
 		product.setName(updatedProduct.getName());
+		product.setCategory(categoryRepository.findById(updatedProduct.getCategory().getId()).get());
+		product.setProductStock(updatedProduct.getProductStock());
+		product.setLinkImage(updatedProduct.getLinkImage());
+		product.setView(updatedProduct.getView());
+		product.setSale(updatedProduct.getSale());
 		product.setDescription(updatedProduct.getDescription());
 		product.setPrice(updatedProduct.getPrice());
+		product.setBestSelling(updatedProduct.isBestSelling());
+		product.setUpdateDate(LocalDateTime.now());
 		return productRepository.save(product);
 	}
 
@@ -123,8 +136,8 @@ public class ProductService {
 //		System.out.println("SEARCH: " + search);
 		// PageRequest.of(page, max,Sort.by(sortBy))
 		// category,
-		Page<Product> productPage = productRepository.findByCategoryAndNameAndIsBestSelling(search,
-				category, isBestSelling, pageable);
+		Page<Product> productPage = productRepository.findByCategoryAndNameAndIsBestSelling(search, category,
+				isBestSelling, pageable);
 		return productPage;
 	}
 
