@@ -54,10 +54,14 @@ public class ProductController {
 //	}
 
 	@GetMapping
-	public Page<Product> showProductsPage(@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int limit, @RequestParam(defaultValue = "none") String isBestSelling,
-			@RequestParam(defaultValue = "none") String sortBy, @RequestParam(defaultValue = "asc") String sortDir,
-			@RequestParam(defaultValue = "") String search, @RequestParam(defaultValue = "-1") int categoryId) {
+	public Page<Product> showProductsPage(
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int limit,
+			@RequestParam(defaultValue = "none") String isBestSelling,
+			@RequestParam(defaultValue = "none") String sortBy, 
+			@RequestParam(defaultValue = "asc") String sortDir,
+			@RequestParam(defaultValue = "") String search,
+			@RequestParam(defaultValue = "-1") int categoryId) {
 		Page<Product> productPage;
 		Category c = null;
 		if (categoryId > -1) {

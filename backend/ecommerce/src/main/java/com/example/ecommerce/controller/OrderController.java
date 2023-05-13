@@ -6,11 +6,13 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 //import org.springframework.data.domain.jaxb.SpringDataJaxb.OrderDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +23,8 @@ import com.example.ecommerce.entity.Order;
 import com.example.ecommerce.entity.OrderDetail;
 import com.example.ecommerce.entity.Product;
 import com.example.ecommerce.entity.User;
+import com.example.ecommerce.enumeration.PaymentMethod;
+import com.example.ecommerce.enumeration.PaymentState;
 import com.example.ecommerce.service.JwtTokenUtil;
 import com.example.ecommerce.service.OrderDetailService;
 import com.example.ecommerce.service.OrderService;
@@ -41,6 +45,19 @@ public class OrderController {
 
 		List<Order> orders = orderService.getOrderByUser(user);
 		return orders.stream().map(this::convertToDto).collect(Collectors.toList());
+	}
+	@GetMapping("/pay-method")
+	public PaymentMethod[] paymentMethod(){
+		return PaymentMethod.values();
+	}
+	@GetMapping("/pay-state")
+	public PaymentState[] paymentState(){
+		return PaymentState.values();
+	}
+	@PutMapping("/pay-state/{id}/{state}")
+	public ResponseEntity<OrderDto> paymentState(@PathVariable Long id, @PathVariable PaymentState state){
+		Order orders = orderService.updateState(id,state);
+		return ResponseEntity.ok(convertToDto(orders));
 	}
 	@GetMapping("/{id}")
 	public OrderDto getOrderByToken(HttpServletRequest request,@PathVariable Long id) {
@@ -85,6 +102,7 @@ public class OrderController {
 		orderDto.setTotalPrice(order.getTotalPrice());
 		orderDto.setTrackingNumber(order.getTrackingNumber());
 		orderDto.setPaymentMethod(order.getPaymentMethod());
+		orderDto.setPaymentState(order.getPaymentState());
 		orderDto.setOrderStatus(order.getOrderStatus());
 		orderDto.setNotes(order.getNotes());
 		orderDto.setOrderDetailDtos(orderDetailService.getOrderDetails(order).stream().map(this::convertToDto)
@@ -115,6 +133,7 @@ public class OrderController {
 		order.setTotalPrice(orderDto.getTotalPrice());
 		order.setTrackingNumber(orderDto.getTrackingNumber());
 		order.setPaymentMethod(orderDto.getPaymentMethod());
+		order.setPaymentState(orderDto.getPaymentState());
 		order.setOrderStatus(orderDto.getOrderStatus());
 		order.setNotes(orderDto.getNotes());
 		List<OrderDetail> orderDetails = orderDto.getOrderDetailDtos().stream().map(this::convertToEntity)
