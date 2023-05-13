@@ -16,6 +16,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import com.example.ecommerce.component.JwtAuthenticationEntryPoint;
 import com.example.ecommerce.component.JwtRequestFilter;
@@ -76,6 +77,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET, "/products/{product_id}/ratings").permitAll()
 				.antMatchers(HttpMethod.GET, "/products/test/**").permitAll()
 				.antMatchers(HttpMethod.GET, "/categories/**").permitAll()
+				.antMatchers(HttpMethod.GET, "/orders/pay-method").permitAll()
+				.antMatchers(HttpMethod.GET, "/orders/pay-state").permitAll()
 				.antMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
 
 				// all other requests need to be authenticated

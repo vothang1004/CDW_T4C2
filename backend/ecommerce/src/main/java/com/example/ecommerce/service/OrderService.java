@@ -21,6 +21,7 @@ import com.example.ecommerce.entity.Order;
 import com.example.ecommerce.entity.OrderDetail;
 import com.example.ecommerce.entity.Product;
 import com.example.ecommerce.entity.User;
+import com.example.ecommerce.enumeration.PaymentState;
 import com.example.ecommerce.exception.NotFoundException;
 import com.example.ecommerce.repository.OrderDetailRepository;
 import com.example.ecommerce.repository.OrderRepository;
@@ -28,7 +29,7 @@ import com.example.ecommerce.repository.ProductRepository;
 
 @Service
 public class OrderService {
-	
+
 	@Autowired
 	private OrderRepository orderRepository;
 
@@ -75,7 +76,7 @@ public class OrderService {
 		// entityManger.persist(user) is an example of Entitymanager
 //        order.setUser(user);
 		order.setOrderStatus("create order");
-		order.setPaymentMethod("not payment yet");
+		order.setPaymentMethod(order.getPaymentMethod());
 		order.setTrackingNumber(createTrackingNumber());
 		// Save the order to the database
 //        Order savedOrder = orderRepository.save(order);
@@ -153,18 +154,28 @@ public class OrderService {
 	}
 
 	public BigDecimal calculateRevenue(LocalDateTime startDate, LocalDateTime endDate) {
-	    BigDecimal revenue = BigDecimal.ZERO;
+		BigDecimal revenue = BigDecimal.ZERO;
 //	    System.out.println("run he"+startDate);
-	    List<Order> orders = orderRepository.findByOrderDateBetween(startDate, endDate);
-	    for (Order order : orders) {
-	        revenue = revenue.add(order.getTotalPrice());
-	    }
-	    return revenue;
+		List<Order> orders = orderRepository.findByOrderDateBetween(startDate, endDate);
+		for (Order order : orders) {
+			revenue = revenue.add(order.getTotalPrice());
+		}
+		return revenue;
 	}
 
 	public Order getOrderByUser(User user, Long id) {
 		// TODO Auto-generated method stub
-		return orderRepository.findByUserAndId(user,id);
+		return orderRepository.findByUserAndId(user, id);
+	}
+
+	public Order updateState(Long id, PaymentState state) {
+		// TODO Auto-generated method stub
+		Order order = orderRepository.findById(id).get();
+		if (order == null)
+			throw new NotFoundException("id order not found");
+		order.setPaymentState(state);
+		orderRepository.save(order);
+		return order;
 	}
 
 }
