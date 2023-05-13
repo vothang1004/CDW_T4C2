@@ -300,7 +300,7 @@ VALUES (@order_id, 4, 2, 199.99, 0, 19.99),
 select * from order_detail;
 select * from `order`;
 select * from user;
-select * from prproductoduct;
+select * from product;
 select * from cart;
 select * from carts;
 select * from product_review;

@@ -14,6 +14,8 @@ import java.util.List;
 
 import com.example.ecommerce.entity.Order;
 import com.example.ecommerce.entity.User;
+import com.example.ecommerce.enumeration.PaymentMethod;
+import com.example.ecommerce.enumeration.PaymentState;
 
 public class OrderDto {
 
@@ -25,7 +27,8 @@ public class OrderDto {
 	private String billingAddress;
 	private BigDecimal totalPrice;
 	private String trackingNumber;
-	private String paymentMethod;
+	private PaymentMethod paymentMethod;
+	private PaymentState paymentState;
 	private String orderStatus;
 	private String notes;
 	private List<OrderDetailDto> orderDetailDtos;
@@ -43,9 +46,10 @@ public class OrderDto {
 
 	
 
+	
 	public OrderDto(Long id, User user, LocalDateTime orderDate, String shippingAddress, String billingAddress,
-			BigDecimal totalPrice, String trackingNumber, String paymentMethod, String orderStatus, String notes,
-			List<OrderDetailDto> orderDetailDtos) {
+			BigDecimal totalPrice, String trackingNumber, PaymentMethod paymentMethod, PaymentState paymentState,
+			String orderStatus, String notes, List<OrderDetailDto> orderDetailDtos) {
 		super();
 		this.id = id;
 		this.user = user;
@@ -55,6 +59,7 @@ public class OrderDto {
 		this.totalPrice = totalPrice;
 		this.trackingNumber = trackingNumber;
 		this.paymentMethod = paymentMethod;
+		this.paymentState = paymentState;
 		this.orderStatus = orderStatus;
 		this.notes = notes;
 		this.orderDetailDtos = orderDetailDtos;
@@ -135,12 +140,22 @@ public class OrderDto {
 		this.trackingNumber = trackingNumber;
 	}
 
-	public String getPaymentMethod() {
+	
+
+	public PaymentMethod getPaymentMethod() {
 		return paymentMethod;
 	}
 
-	public void setPaymentMethod(String paymentMethod) {
+	public void setPaymentMethod(PaymentMethod paymentMethod) {
 		this.paymentMethod = paymentMethod;
+	}
+
+	public PaymentState getPaymentState() {
+		return paymentState;
+	}
+
+	public void setPaymentState(PaymentState paymentState) {
+		this.paymentState = paymentState;
 	}
 
 	public String getOrderStatus() {

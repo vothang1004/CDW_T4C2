@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +16,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.example.ecommerce.enumeration.PaymentMethod;
+import com.example.ecommerce.enumeration.PaymentState;
 
 //import org.springframework.data.annotation.Id;
 
@@ -47,19 +52,30 @@ public class Order {
 	private String trackingNumber;
 
 	@Column(name = "payment_method", nullable = false)
-	private String paymentMethod;
-
+	@Enumerated(EnumType.STRING)
+	private PaymentMethod paymentMethod;
+	@Column(name = "payment_state", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private PaymentState paymentState;
 	@Column(name = "order_status", nullable = false)
 	private String orderStatus;
 
 	@Column(name = "notes")
 	private String notes;
-	
+
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<OrderDetail> orderdetails;
 	// constructors
 
 	public Order() {
+	}
+
+	public PaymentState getPaymentState() {
+		return paymentState;
+	}
+
+	public void setPaymentState(PaymentState paymentState) {
+		this.paymentState = paymentState;
 	}
 
 	public List<OrderDetail> getOrderdetails() {
@@ -70,8 +86,8 @@ public class Order {
 		this.orderdetails = orderdetails;
 	}
 
-	public Order(User user, String shippingAddress, String billingAddress, BigDecimal totalPrice, String paymentMethod,
-			String orderStatus) {
+	public Order(User user, String shippingAddress, String billingAddress, BigDecimal totalPrice,
+			PaymentMethod paymentMethod, String orderStatus) {
 		this.user = user;
 		this.shippingAddress = shippingAddress;
 		this.billingAddress = billingAddress;
@@ -138,11 +154,11 @@ public class Order {
 		this.trackingNumber = trackingNumber;
 	}
 
-	public String getPaymentMethod() {
+	public PaymentMethod getPaymentMethod() {
 		return paymentMethod;
 	}
 
-	public void setPaymentMethod(String paymentMethod) {
+	public void setPaymentMethod(PaymentMethod paymentMethod) {
 		this.paymentMethod = paymentMethod;
 	}
 

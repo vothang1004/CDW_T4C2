@@ -18,6 +18,7 @@ import com.example.ecommerce.entity.Category;
 import com.example.ecommerce.entity.Order;
 import com.example.ecommerce.entity.OrderDetail;
 import com.example.ecommerce.entity.Product;
+import com.example.ecommerce.enumeration.PaymentState;
 import com.example.ecommerce.repository.OrderRepository;
 
 @Service
@@ -50,7 +51,7 @@ public class SaleService {
 
 		BigDecimal sales = BigDecimal.ZERO;
 		for (Order order : orders) {
-			if (!order.getPaymentMethod().equals("not payment yet")) {
+			if (order.getPaymentState().equals(PaymentState.paid)) {
 				sales = sales.add(order.getTotalPrice());
 			}
 		}
