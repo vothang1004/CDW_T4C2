@@ -3,15 +3,17 @@ package com.example.ecommerce.test;
 import java.awt.color.*;
 
 
-class Alien {
+public class Alien {
 	String invade(short... ships) {
 		return "many";
 	}
 
-	String invade(short ships) {
+	protected String invade(short ships) {
 		return "a few";
 	}
-
+	public void object(Object obj) {
+		
+	}
 }
 
 class Defender {
