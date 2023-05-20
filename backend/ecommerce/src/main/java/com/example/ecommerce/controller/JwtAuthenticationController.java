@@ -18,7 +18,8 @@ import com.example.ecommerce.model.JwtRequest;
 import com.example.ecommerce.model.JwtResponse;
 import com.example.ecommerce.service.JwtTokenUtil;
 import com.example.ecommerce.service.JwtUserDetailsService;
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/authenticate")
 public class JwtAuthenticationController {

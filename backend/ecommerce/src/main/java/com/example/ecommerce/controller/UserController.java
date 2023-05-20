@@ -1,7 +1,6 @@
 package com.example.ecommerce.controller;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -29,6 +28,9 @@ import com.example.ecommerce.exception.UserRegistrationException;
 import com.example.ecommerce.model.UserNewPassword;
 import com.example.ecommerce.service.JwtTokenUtil;
 import com.example.ecommerce.service.UserService;
+
+import reactor.core.publisher.Mono;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/users")
@@ -38,8 +40,6 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private JwtTokenUtil tokenService;
-
-	
 
 //	{
 //	    "username": "john_doe",
@@ -59,7 +59,7 @@ public class UserController {
 			user.setUserRole(UserRole.user);
 			user.setActive(true);
 			userService.registerUser(user);
-			
+
 			return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
 		} catch (MethodArgumentTypeMismatchException e) {
 			e.printStackTrace();
@@ -70,8 +70,12 @@ public class UserController {
 	@PostMapping("/forgot-password")
 	public ResponseEntity<String> forgotPassword(@RequestBody EmailDto emaildto) {
 		String response = userService.forgotpassword(emaildto.getEmail());
-
 		return ResponseEntity.ok(response);
+	}
+
+	@PostMapping("/forgot-password-mono")
+	public Mono<ResponseEntity<String>> forgotPasswordMono(@RequestBody EmailDto emailDto) {
+		return userService.forgotpasswordMono(emailDto.getEmail()).map(response -> ResponseEntity.ok(response));
 	}
 
 	@GetMapping("/reset-password")
@@ -127,7 +131,7 @@ public class UserController {
 	public long getIdUserByRequest(HttpServletRequest request) {
 		String token = request.getHeader("Authorization");
 		long userId = tokenService.getUserIdFromBearToken(token);
-		return userId; 
+		return userId;
 	}
 
 	@PutMapping("/changepassword")

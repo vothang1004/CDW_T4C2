@@ -19,18 +19,18 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 public class MailService {
-	private static String from = "chuyendewebproject@gmail.com";
-	private static String password = "zcihlgnqjyhvzqcu" + 
-			"";
-
+//	private static String from = "chuyendewebproject@gmail.com";
+//	private static String password = "zcihlgnqjyhvzqcu"; //chuyendewebproject
+	private static String from = "raucuqua111@gmail.com";
+	private static String password = "zdsrknclwofdnhwo";
 	public static boolean sendMail(String to, String subject, String content, boolean isBill, String bill) {
 		Session session = connect();
 		try {
 			// Create a default MimeMessage object.
 			MimeMessage message = new MimeMessage(session);
-
+			///"raucuqua111@gmail.com"
 			// Set From: header field of the header.
-			message.setFrom(new InternetAddress("raucuqua111@gmail.com"));
+			message.setFrom(new InternetAddress(from));
 
 			// Set To: header field of the header.
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
