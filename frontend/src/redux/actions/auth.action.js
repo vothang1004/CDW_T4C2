@@ -1,34 +1,16 @@
-import {
-  loginStart,
-  loginFail,
-  loginSuccess,
-  logoutSuccess,
-} from "../reducrers/auth.reducer";
-import axiosPublic from "../../utils/axiosPublic";
+import { axiosPublic } from "../../utils/https";
+import { login } from "../reducers/auth.reducer";
 
-// login user
-const loginUser = async (
-  dispatch,
-  navigate,
-  setMessageLogin,
-  setTypeSnackbar,
-  user
-) => {
+const loginUser = async ({ dispatch, router, data }) => {
   try {
-    dispatch(loginStart());
-    const resp = await axiosPublic.post(`/auth/login`, user);
+    const resp = await axiosPublic.post("/authenticate", data);
     if (resp && resp.status === 200) {
-      dispatch(loginSuccess(resp.data));
-      navigate("/");
+      dispatch(login(resp.data));
+      router.push("/home");
     }
   } catch (error) {
-    dispatch(loginFail());
-    setTypeSnackbar("error");
-    setMessageLogin(error?.response?.data?.message);
+    console.log({ error });
   }
 };
-// logout user
-const logoutUser = (dispatch) => {
-  dispatch(logoutSuccess());
-};
-export { loginUser, logoutUser };
+
+export { loginUser };

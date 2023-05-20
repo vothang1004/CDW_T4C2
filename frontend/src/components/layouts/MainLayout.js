@@ -1,32 +1,20 @@
-import { Box } from "@mui/system";
 import React from "react";
-import { useGlobalTheme } from "../../context/themeContext";
-import Header from "./components/header/Header";
+import Header from "./components/Header";
+import NavigationBar from "./components/NavigationBar";
+import Footer from "./components/Footer";
 
 function MainLayout({ children }) {
-  const [darkMode] = useGlobalTheme();
   return (
-    <Box
-      sx={{
-        height: "100vh",
-        backgroundColor: darkMode
-          ? "darkmode.darkBG"
-          : "whitish.liteBackground",
-      }}
-    >
-      <Header />
-      <Box
-        id="layout"
-        sx={{
-          height: "calc(100vh - 65px)",
-          overflow: "auto",
-          backgroundColor: "whitish.gray",
-          padding: "24px 0",
-        }}
-      >
-        {children}
-      </Box>
-    </Box>
+    <>
+      <div className="fixed top-0 left-0 z-[1000] w-full">
+        <Header />
+        <NavigationBar />
+      </div>
+      <div className="mt-[102px]">
+        <div className="w-full">{children}</div>
+        <Footer />
+      </div>
+    </>
   );
 }
 
