@@ -8,8 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +15,8 @@ import com.example.ecommerce.entity.User;
 import com.example.ecommerce.exception.UserRegistrationException;
 import com.example.ecommerce.model.UserNewPassword;
 import com.example.ecommerce.repository.UserRepository;
+
+import reactor.core.publisher.Mono;
 
 @Service
 public class UserService {
@@ -44,7 +44,9 @@ public class UserService {
 		String contextPath = request.getContextPath();
 		return scheme + "://" + serverName + ":" + serverPort + contextPath + "/";
 	}
-
+	public Mono<String> forgotpasswordMono(String email){
+	    return Mono.fromCallable(() -> forgotpassword(email));
+	}
 	public String forgotpassword(String email) {
 		User user = userRepository.findByEmail(email);
 		if (user == null) {
