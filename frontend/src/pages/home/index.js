@@ -7,8 +7,7 @@ import Products from "./Products";
 import SliderImage from "../../assets/images/slider1.jpg";
 import { axiosPublic } from "../../utils/https";
 
-export default function Home() {
-
+export default function Home({ products }) {
   return (
     <MainLayout>
       <main>
@@ -21,13 +20,17 @@ export default function Home() {
           {/* Best Categories */}
           <BestCategories />
           {/* Products */}
-          <Products />
+          <Products products={products} />
         </div>
       </main>
     </MainLayout>
   );
 }
-export const getStaticProps = async() => {
-  const resp = axiosPublic.get('/products')
-  return { props: { products } };
+export const getStaticProps = async () => {
+  const resp = await axiosPublic.get("/products?page=1&limit=8");
+  if (resp && resp.status === 200) {
+    return { props: { products: resp.data.content }, revalidate: 10 };
+  } else {
+    return { props: { products: [] }, revalidate: 10 };
+  }
 };

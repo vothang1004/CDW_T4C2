@@ -7,8 +7,11 @@ import { AiOutlineSortAscending } from "react-icons/ai";
 import ButtonBase from "../../components/button/ButtonBase";
 import Product from "../../components/product/Product";
 import Pagination from "../../components/pagination/Pagination";
+import { axiosPublic } from "../../utils/https";
 
-function Products() {
+function Products({ productsData }) {
+  const [products, setProducts] = useState(productsData.content || []);
+
   const [currentSort, setCurrentSort] = useState(0);
   return (
     <MainLayout>
@@ -122,9 +125,9 @@ function Products() {
         </div>
         {/* Products List */}
         <div className="w-full flex flex-wrap mt-5">
-          {new Array(7).fill(0).map((product, index) => (
+          {products.map((product, index) => (
             <div key={index} className="basis-1/4 p-[10px]">
-              <Product />
+              <Product data={product} />
             </div>
           ))}
         </div>
@@ -144,3 +147,11 @@ function Products() {
 }
 
 export default Products;
+
+export const getStaticProps = async () => {
+  const resp = await axiosPublic.get("/products?page=1&limit=12");
+  return {
+    props: { productsData: resp.status === 200 ? resp.data : null },
+    revalidate: 10,
+  };
+};

@@ -4,14 +4,14 @@ import Link from "next/link";
 import { HiOutlineChevronRight } from "react-icons/hi";
 import Product from "../../components/product/Product";
 
-function Products() {
+function Products({ products }) {
   return (
     <div className="py-5 flex flex-col items-center gap-[10px]">
       <h2 className="text-[26px] font-[700] text-center pb-5">Sản phẩm</h2>
       <div className="flex flex-wrap">
-        {new Array(8).fill(0).map((item, index) => (
+        {products.map((product, index) => (
           <div key={index} className="basis-1/4 p-[10px]">
-            <Product />
+            <Product data={product} />
           </div>
         ))}
       </div>
