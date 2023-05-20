@@ -26,8 +26,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "carts")
 @JsonSerialize(using = CartSerializer.class)
 @JsonDeserialize(using = CartJsonDeserializer.class)
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class Cart2 {
 
 	@Id
