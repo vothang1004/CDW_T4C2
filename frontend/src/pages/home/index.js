@@ -27,7 +27,7 @@ export default function Home() {
     </MainLayout>
   );
 }
-export const getStaticProps = async() => {
-  const resp = axiosPublic.get('/products')
-  return { props: { products } };
-};
+// export const getStaticProps = async() => {
+//   const resp = axiosPublic.get('/products')
+//   return { props: { products } };
+// };
