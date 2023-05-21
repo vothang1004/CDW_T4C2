@@ -32,6 +32,7 @@ import com.example.ecommerce.service.JwtTokenUtil;
 import com.example.ecommerce.service.ProductCommentService;
 import com.example.ecommerce.service.ProductReviewService;
 import com.example.ecommerce.service.ProductService;
+import com.sun.jdi.InvalidCodeIndexException;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -55,18 +56,22 @@ public class ProductController {
 
 	@GetMapping
 	public Page<Product> showProductsPage(
-			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "1") int page,
 			@RequestParam(defaultValue = "10") int limit,
 			@RequestParam(defaultValue = "none") String isBestSelling,
-			@RequestParam(defaultValue = "none") String sortBy, 
+			@RequestParam(defaultValue = "none") String sortBy,
 			@RequestParam(defaultValue = "asc") String sortDir,
-			@RequestParam(defaultValue = "") String search,
+			@RequestParam(defaultValue = "") String search, 
 			@RequestParam(defaultValue = "-1") int categoryId) {
 		Page<Product> productPage;
 		Category c = null;
 		if (categoryId > -1) {
 			c = new Category();
 			c.setId(categoryId);
+		}
+		page -= 1;
+		if (page < 0) {
+			return null;
 		}
 		Boolean isBest = null;
 		if (!isBestSelling.equals("none"))
@@ -211,7 +216,7 @@ public class ProductController {
 	}
 
 	// admin
-	
+
 	// rating 1 edition
 //	@PostMapping("/{productId}/ratings")
 //	public ResponseEntity<Rating> addRating(@PathVariable Long productId, @RequestBody RatingRequest ratingRequest) {
