@@ -9,10 +9,12 @@ import Product from "../../components/product/Product";
 import Pagination from "../../components/pagination/Pagination";
 import { axiosPublic } from "../../utils/https";
 
-function Products({ productsData }) {
-  const [products, setProducts] = useState(productsData.content || []);
-
+function Products({ data }) {
+  const [products, setProducts] = useState(data.content || []);
   const [currentSort, setCurrentSort] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  console.log({ data });
   return (
     <MainLayout>
       <div className="shadow-md h-[45px]">
@@ -56,7 +58,7 @@ function Products({ productsData }) {
               <span className="font-semibold">Xếp theo</span>
             </div>
             <ButtonBase
-              hieght="34px"
+              height="34px"
               classes={`border border-black hover:text-white hover:bg-black
                 ${
                   currentSort === 0
@@ -67,7 +69,7 @@ function Products({ productsData }) {
               Mặc định
             </ButtonBase>
             <ButtonBase
-              hieght="34px"
+              height="34px"
               classes={`border border-black hover:text-white hover:bg-black
                 ${
                   currentSort === 1
@@ -78,7 +80,7 @@ function Products({ productsData }) {
               Tên A-Z
             </ButtonBase>
             <ButtonBase
-              hieght="34px"
+              height="34px"
               classes={`border border-black hover:text-white hover:bg-black
                 ${
                   currentSort === 2
@@ -89,7 +91,7 @@ function Products({ productsData }) {
               Tên Z-A
             </ButtonBase>
             <ButtonBase
-              hieght="34px"
+              height="34px"
               classes={`border border-black hover:text-white hover:bg-black
                 ${
                   currentSort === 3
@@ -100,7 +102,7 @@ function Products({ productsData }) {
               Hàng mới
             </ButtonBase>
             <ButtonBase
-              hieght="34px"
+              height="34px"
               classes={`border border-black hover:text-white hover:bg-black
                 ${
                   currentSort === 4
@@ -111,7 +113,7 @@ function Products({ productsData }) {
               Giá thấp đến cao
             </ButtonBase>
             <ButtonBase
-              hieght="34px"
+              height="34px"
               classes={`border border-black hover:text-white hover:bg-black
                 ${
                   currentSort === 5
@@ -134,11 +136,11 @@ function Products({ productsData }) {
         {/* Pagination */}
         <div className="w-full mt-5">
           <Pagination
-            currentPage={4}
-            totalPage={10}
+            currentPage={currentPage}
+            totalPage={data.totalPages}
+            pageNearNumber={2}
             showEndButton
             showFirstButton
-            pageNearNumber={2}
           />
         </div>
       </div>
@@ -148,10 +150,7 @@ function Products({ productsData }) {
 
 export default Products;
 
-export const getStaticProps = async () => {
-  const resp = await axiosPublic.get("/products?page=1&limit=12");
-  return {
-    props: { productsData: resp.status === 200 ? resp.data : null },
-    revalidate: 10,
-  };
+export const getServerSideProps = async () => {
+  const resp = await axiosPublic.get("/products?limit=12&page=0");
+  return { props: { data: resp.data } };
 };

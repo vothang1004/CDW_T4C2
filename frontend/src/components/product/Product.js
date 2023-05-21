@@ -3,8 +3,8 @@ import Link from "next/link";
 
 function Product({ data }) {
   return (
-    <Link href="/product/1">
-      <div className="w-full shadow-2xl rounded-md group hover:cursor-pointer">
+    <Link href="/product/1" className="inline-block h-full">
+      <div className="w-full h-full flex flex-col shadow-2xl rounded-md group hover:cursor-pointer">
         <div className="image w-full overflow-hidden relative">
           <img
             className="w-full h-full object-contain rounded-md group-hover:scale-105 transition-all duration-[0.2s]"
@@ -18,9 +18,9 @@ function Product({ data }) {
             Trả góp 0%
           </div>
         </div>
-        <div className="p-2">
+        <div className="p-2 grow flex flex-col justify-between">
           <p className="text-[14px] group-hover:text-red">{data.name}</p>
-          <div className="mt-5">
+          <div className="mt-2">
             {/* <del className="block opacity-70 text-[10px]">33.990.000</del> */}
             <p className="font-bold text-red">{data.price}</p>
             <div className="p-1 bg-gray rounded-md">

@@ -34,6 +34,7 @@ public class JwtAuthenticationController {
     private JwtUserDetailsService userDetailsService;
 
     @PostMapping
+    @CrossOrigin(origins = "*")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
         
@@ -42,6 +43,7 @@ public class JwtAuthenticationController {
         
         final String token = jwtTokenUtil.generateToken(userDetails);
         final User user = userDetailsService.loadUserByEmail(authenticationRequest.getEmail());
+        System.out.println("run authen");
         return ResponseEntity.ok(new JwtResponse(token,user));
     }
 

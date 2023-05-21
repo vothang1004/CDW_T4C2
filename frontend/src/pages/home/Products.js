@@ -8,7 +8,7 @@ function Products({ products }) {
   return (
     <div className="py-5 flex flex-col items-center gap-[10px]">
       <h2 className="text-[26px] font-[700] text-center pb-5">Sản phẩm</h2>
-      <div className="flex flex-wrap">
+      <div className="flex items-stretch flex-wrap">
         {products.map((product, index) => (
           <div key={index} className="basis-1/4 p-[10px]">
             <Product data={product} />
