@@ -5,7 +5,7 @@ function Product({ data }) {
   return (
     <Link href="/product/1" className="inline-block h-full">
       <div className="w-full h-full flex flex-col shadow-2xl rounded-md group hover:cursor-pointer">
-        <div className="image w-full overflow-hidden relative">
+        <div className="image w-full h-[300px] overflow-hidden relative">
           <img
             className="w-full h-full object-contain rounded-md group-hover:scale-105 transition-all duration-[0.2s]"
             src={

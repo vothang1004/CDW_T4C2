@@ -8,7 +8,12 @@ function Pagination({
   pageNearNumber = 2,
   showFirstButton,
   showEndButton,
+  onPageChange = () => {},
 }) {
+  // handle page change
+  const handlePageChange = (value) => {
+    onPageChange(value);
+  };
   const pages = useMemo(() => {
     let result = [];
     if (totalPage > 1) {
@@ -23,13 +28,13 @@ function Pagination({
     return result;
   }, [totalPage, pageNearNumber]);
 
-  if(currentPage > totalPage) {
-    throw new Error('Current page must be less than total page')
+  if (currentPage > totalPage) {
+    throw new Error("Current page must be less than total page");
   }
 
   return (
     <div className="flex items-center justify-center gap-2">
-      {showFirstButton && pages[0].value > 1 && (
+      {showFirstButton && pages[0]?.value > 1 && (
         <button
           key={v4()}
           className={`w-[30px] h-[30px] flex items-center justify-center rounded-full bg-transparent text-black boder-black
@@ -38,7 +43,7 @@ function Pagination({
           <GrChapterPrevious fontSize="14px" color="current-color" />
         </button>
       )}
-      {pages[0].value > 1 && (
+      {pages[0]?.value > 1 && (
         <button
           key={v4()}
           className={`w-[30px] h-[30px] flex items-center justify-center rounded-full bg-transparent text-black boder-black
@@ -51,6 +56,7 @@ function Pagination({
         return (
           <button
             key={v4()}
+            onClick={() => handlePageChange(page.value)}
             className={`w-[30px] h-[30px] flex items-center justify-center rounded-full ${
               currentPage === page.value
                 ? "bg-red border-red text-white"
@@ -62,7 +68,7 @@ function Pagination({
           </button>
         );
       })}
-      {pages[pages.length - 1].value < totalPage && (
+      {pages[pages.length - 1]?.value < totalPage && (
         <button
           key={v4()}
           className={`w-[30px] h-[30px] flex items-center justify-center rounded-full bg-transparent text-black boder-black
@@ -71,7 +77,7 @@ function Pagination({
           ...
         </button>
       )}
-      {showEndButton && pages[pages.length - 1].value < totalPage && (
+      {showEndButton && pages[pages.length - 1]?.value < totalPage && (
         <button
           key={v4()}
           className={`w-[30px] h-[30px] flex items-center justify-center rounded-full bg-transparent text-black boder-black
