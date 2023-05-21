@@ -1,27 +1,19 @@
 import React from "react";
-import { FiSearch, FiUser } from "react-icons/fi";
+import { FiUser } from "react-icons/fi";
 import { GoLocation } from "react-icons/go";
 import { BsTelephone, BsCart2 } from "react-icons/bs";
 import { BiChevronDown } from "react-icons/bi";
+import Link from "next/link";
+import SearchBar from "./SearchBar";
 
-function Header() {
+function Header({ onSearch, defaultSearchText }) {
   return (
     <header className="w-full h-[60px] text-white bg-black relative z-50">
       <div className="container mx-auto px-4 h-full flex items-center justify-between">
-        <p className="text-[30px] font-bold">Sudes Phone</p>
-        <div className="flex h-[40px] w-[410px] items-center bg-white rounded-md pr-2">
-          <input
-            className="bg-transparent flex-grow h-full border-none outline-none px-2 text-black text-sm"
-            type="text"
-            placeholder="Tìm sản phẩm..."
-          />
-          <span
-            className="text-black inline-flex w-[30px] h-[30px] hover:bg-gray cursor-pointer
-          items-center justify-center transition-all rounded-full"
-          >
-            <FiSearch size="18px" />
-          </span>
-        </div>
+        <Link href="/home">
+          <p className="text-[30px] font-bold cursor-pointer">Sudes Phone</p>
+        </Link>
+        <SearchBar onSearch={onSearch} defaultSearchText={defaultSearchText} />
         <div className="grow-1 flex gap-4 items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="h-[40px] text-white flex gap-1 items-center bg-black-gray p-1 rounded cursor-pointer hover:brightness-90">

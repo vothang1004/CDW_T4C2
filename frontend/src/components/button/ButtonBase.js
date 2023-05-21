@@ -5,13 +5,15 @@ function ButtonBase({
   classes = "",
   fullWidth,
   loading = false,
-  hieght = "42px",
+  height = "42px",
+  onClick = () => {},
   children,
 }) {
   return (
     <button
+      onClick={onClick}
       type={type}
-      className={`px-4 py-2 h-[${hieght}] text-white bg-black hover:bg-red transition-all duration-200 rounded-md
+      className={`px-4 py-2 h-[${height}] text-black hover:bg-red hover:border-red transition-all duration-200 rounded-md
       flex items-center justify-center ${
         fullWidth ? "w-full" : "w-fit"
       } ${classes} ${loading ? "bg-gray pointer-events-none" : ""}`}
