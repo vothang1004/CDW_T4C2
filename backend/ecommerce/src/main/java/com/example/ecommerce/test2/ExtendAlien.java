@@ -3,11 +3,11 @@ package com.example.ecommerce.test2;
 import com.example.ecommerce.test.Alien;
 
 public class ExtendAlien extends Alien {
-	enum c implements Runnable{
-		
+	enum c implements Runnable {
+
 		a, b, c;
+
 		int m;
-		
 
 		c(int m) {
 			this.m = m;
@@ -17,18 +17,37 @@ public class ExtendAlien extends Alien {
 
 		}
 
-		public void runme() {
+		Object[] hu()[] {
+			Object x[][] = new Object[4][7];
+			return x;
+		}
+
+		public void runme(final int b) {
 			System.out.println("run general" + m);
 		}
 
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 	}
-	
+
+	class a {
+		int m;
+	}
+
+	class b extends a {
+		void go2(a a, b b) {
+			m += 2;
+		}
+	}
+
+	void method() {
+		b b = (com.example.ecommerce.test2.ExtendAlien.b) new a();
+
+	}
 
 	final int a;
 	{
@@ -36,6 +55,7 @@ public class ExtendAlien extends Alien {
 	}
 
 	public ExtendAlien() {
+
 		System.out.println(a);
 //		c.c(5);
 		Thread t = new Thread(c.c);
@@ -43,8 +63,13 @@ public class ExtendAlien extends Alien {
 		// TODO Auto-generated constructor stub
 	}
 
-	int a(int b) {
-		return b;
+	public ExtendAlien(int b) {
+
+		System.out.println(a);
+//		c.c(5);
+		Thread t = new Thread(c.c);
+		t.start();
+		// TODO Auto-generated constructor stub
 	}
 
 	void b(Alien alien) {
@@ -55,6 +80,10 @@ public class ExtendAlien extends Alien {
 
 	}
 
+	synchronized strictfp public int a(int b) {
+		return b;
+	}
+	final transient public  int b;
 	int a(Object b) {
 		return -1;
 	}
@@ -69,10 +98,10 @@ public class ExtendAlien extends Alien {
 
 	void fire() {
 		int z = a(2);
-		ExtendAlien a = new ExtendAlien();
-		b(a);
+//		Alien a = ;
+		b(new ExtendAlien());
 		Short s = 2;
-		
+
 		this.invade(s);
 	}
 
