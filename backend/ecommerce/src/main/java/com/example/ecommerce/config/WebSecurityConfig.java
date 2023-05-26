@@ -77,19 +77,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET, "/products/most-viewed-products").permitAll()
 				.antMatchers(HttpMethod.GET, "/products/suggested-products/{product_id}").permitAll()
 				.antMatchers(HttpMethod.GET, "/products/{product_id}/comments").permitAll()
+				.antMatchers(HttpMethod.GET, "/products/{productId}/comments/parent/{parentCommentId}").permitAll()
 				.antMatchers(HttpMethod.GET, "/products/{product_id}/ratings").permitAll()
 				.antMatchers(HttpMethod.GET, "/products/test/**").permitAll()
 				.antMatchers(HttpMethod.GET, "/categories/**").permitAll()
 				.antMatchers(HttpMethod.GET, "/orders/pay-method").permitAll()
 				.antMatchers(HttpMethod.GET, "/orders/pay-state").permitAll()
 				.antMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
-
+				
 				// all other requests need to be authenticated
 				.anyRequest().authenticated().and()
+				
 				// make sure we use stateless session; session won't be used to store user's
 				// state.
 				.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				;
 
 		// Add a filter to validate the tokens with every request
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
