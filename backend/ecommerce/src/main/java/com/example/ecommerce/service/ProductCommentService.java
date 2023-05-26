@@ -108,4 +108,13 @@ public class ProductCommentService {
 		dto.setParentCommentId(comment.getParentComment() != null ? comment.getParentComment().getId() : null);
 		return dto;
 	}
+
+	public List<ProductCommentDto> getCommentsForProductAndParentId(Long productId, Long parentCommentId) {
+		List<ProductComment> comments = productCommentRepository.findByProductIdAndParentComment(productId,parentCommentId);
+		List<ProductCommentDto> commentDtos = new ArrayList<>();
+		for (ProductComment comment : comments) {
+			commentDtos.add(mapToDto(comment));
+		}
+		return commentDtos;
+	}
 }

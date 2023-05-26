@@ -5,12 +5,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.NumberUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,14 +63,10 @@ public class ProductController {
 //	}
 
 	@GetMapping
-	public Page<Product> showProductsPage(
-			@RequestParam(defaultValue = "1") int page,
-			@RequestParam(defaultValue = "10") int limit,
-			@RequestParam(defaultValue = "none") String isBestSelling,
-			@RequestParam(defaultValue = "none") String sortBy,
-			@RequestParam(defaultValue = "asc") String sortDir,
-			@RequestParam(defaultValue = "") String search, 
-			@RequestParam(defaultValue = "-1") int categoryId) {
+	public Page<Product> showProductsPage(@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "10") int limit, @RequestParam(defaultValue = "none") String isBestSelling,
+			@RequestParam(defaultValue = "none") String sortBy, @RequestParam(defaultValue = "asc") String sortDir,
+			@RequestParam(defaultValue = "") String search, @RequestParam(defaultValue = "-1") int categoryId) {
 		Page<Product> productPage;
 		Category c = null;
 		if (categoryId > -1) {
@@ -215,6 +219,53 @@ public class ProductController {
 		return ResponseEntity.ok(comments);
 	}
 
+	@GetMapping("/{productId}/comments/parent/{parentCommentId}")
+	public ResponseEntity<List<ProductCommentDto>> replyToComment(HttpServletRequest request,
+			@PathVariable Long productId, @PathVariable @DefaultValue("null") String parentCommentId) {
+		Long pcId = null;
+		if (isLong(parentCommentId)) {
+			pcId = Long.parseLong(parentCommentId);
+		}
+		List<ProductCommentDto> comments = productCommentService.getCommentsForProductAndParentId(productId, pcId);
+		return ResponseEntity.ok(comments);
+	}
+
+	public static boolean isDouble(String strNum) {
+		if (strNum == null) {
+			return false;
+		}
+		try {
+			double d = Double.parseDouble(strNum);
+			return true;
+		} catch (NumberFormatException nfe) {
+			return false;
+		}
+	}
+
+	public static boolean isLong(String strNum) {
+		if (strNum == null) {
+			return false;
+		}
+		try {
+			double d = Double.parseDouble(strNum);
+			return true;
+		} catch (NumberFormatException nfe) {
+			return false;
+		}
+	}
+
+	class CommentDto {
+
+		private Long id;
+
+		private Long user_id;
+
+		private Long product_id;
+
+		private String comment;
+
+		private LocalDateTime createDate;
+	}
 	// admin
 
 	// rating 1 edition

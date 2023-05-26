@@ -54,7 +54,9 @@ public class OrderDetail {
 	@Column(name = "create_date", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createDate;
-
+	/*
+	 * UPDATE CURRENT_TIMESTAMP : auto adjust updateDate when this row is updated.
+	 */
 	@Column(name = "update_date", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updateDate;
