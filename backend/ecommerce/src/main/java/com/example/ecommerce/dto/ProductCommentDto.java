@@ -8,7 +8,7 @@ public class ProductCommentDto {
 	private LocalDateTime createDate;
 	private String user;
 	private Long parentCommentId;
-
+	private Long sizeChild;
 	public ProductCommentDto() {
 		// TODO Auto-generated constructor stub
 	}
@@ -19,13 +19,25 @@ public class ProductCommentDto {
 		this.parentCommentId = parentCommentId;
 	}
 
-	public ProductCommentDto(Long id, String comment, LocalDateTime createDate, String user, Long parentCommentId) {
+	
+
+	public ProductCommentDto(Long id, String comment, LocalDateTime createDate, String user, Long parentCommentId,
+			Long sizeChild) {
 		super();
 		this.id = id;
 		this.comment = comment;
 		this.createDate = createDate;
 		this.user = user;
 		this.parentCommentId = parentCommentId;
+		this.sizeChild = sizeChild;
+	}
+
+	public Long getSizeChild() {
+		return sizeChild;
+	}
+
+	public void setSizeChild(Long sizeChild) {
+		this.sizeChild = sizeChild;
 	}
 
 	public Long getId() {
