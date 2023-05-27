@@ -1,5 +1,6 @@
 package com.example.ecommerce.entity;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,7 @@ public class Cart2 {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-//	@Column(name = "user_id")
+	@Column(name = "user_id")
 	private Long userId;
 
 	@ElementCollection
@@ -47,7 +48,11 @@ public class Cart2 {
 		this.userId = userId;
 		this.productsWithAmount = productsWithAmount;
 	}
-
+	public Cart2(Long userId) {
+		super();
+		this.userId = userId;
+		this.productsWithAmount = new HashMap<Product, Integer>();
+	}
 	public Cart2(Long id, Long userId, Map<Product, Integer> productsWithAmount) {
 		super();
 		this.id = id;

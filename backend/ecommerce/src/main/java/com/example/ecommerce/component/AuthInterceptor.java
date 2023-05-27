@@ -59,7 +59,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 		// You can use a database or some other source to store the permissions and
 		// roles of the users
 //		System.out.println("username "+username+", path: "+path+", method: "+method);
-		User user = userRepository.findByUsername(username);
+		User user = userRepository.findByEmail(username);
 //		System.out.println("user "+user);
 
 		if (user == null) {

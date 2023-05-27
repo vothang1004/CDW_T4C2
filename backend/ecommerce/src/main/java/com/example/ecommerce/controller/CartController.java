@@ -20,6 +20,7 @@ import com.example.ecommerce.entity.Cart2;
 import com.example.ecommerce.entity.Product;
 import com.example.ecommerce.service.CartService;
 import com.example.ecommerce.service.JwtTokenUtil;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/carts")
@@ -44,6 +45,7 @@ public class CartController {
 		String token = request.getHeader("Authorization");
 		long userId = tokenService.getUserIdFromBearToken(token);
 		Cart2 cart = cartService.getCartByUserId(userId);
+		
 		return cart;
 	}
 
@@ -79,11 +81,12 @@ public class CartController {
 		return cartService.addProductToCart(cart.getId(), product);
 	}
 
-	@DeleteMapping("/products/{productId}")
-	public Cart2 removeProductFromCart(HttpServletRequest request, @PathVariable Long productId) {
+	@DeleteMapping("/products/{productId}/{amount}")
+	public Cart2 removeProductFromCart(HttpServletRequest request, @PathVariable Long productId,
+			@PathVariable Integer amount) {
 		Cart2 cart = getCartfromrequest(request);
 		Product product = new Product();
 		product.setId(productId);
-		return cartService.removeProductFromCart(cart.getId(), product);
+		return cartService.removeProductFromCart(cart.getId(), product, amount);
 	}
 }
