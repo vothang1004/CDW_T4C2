@@ -21,7 +21,7 @@ import com.example.ecommerce.entity.Product;
 import com.example.ecommerce.service.CartService;
 import com.example.ecommerce.service.JwtTokenUtil;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/carts")
 public class CartController {

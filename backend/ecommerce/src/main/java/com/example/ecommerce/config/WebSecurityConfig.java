@@ -87,7 +87,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				
 				// all other requests need to be authenticated - check by authentication object is not null.
 				.anyRequest().authenticated().and()
-				
+				.cors().and()
 				// make sure we use stateless session; session won't be used to store user's
 				// state.
 				.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
