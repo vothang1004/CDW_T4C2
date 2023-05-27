@@ -115,15 +115,15 @@ CREATE TABLE carts (
   FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
--- CREATE TABLE cart_products (
---   id int4 NOT NULL AUTO_INCREMENT PRIMARY KEY,
---   cart_id int4 NOT NULL,
---   product_id int NOT NULL,
---   amount INT DEFAULT 1,
---   UNIQUE (cart_id, product_id),
---   FOREIGN KEY (cart_id) REFERENCES ecommerce.carts(id),
---   FOREIGN KEY (product_id) REFERENCES product(id)
--- );
+ CREATE TABLE cart_products (
+   id int4 NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   cart_id int4 NOT NULL,
+   product_id int NOT NULL,
+   amount INT DEFAULT 1,
+   UNIQUE (cart_id, product_id),
+   FOREIGN KEY (cart_id) REFERENCES ecommerce.carts(id),
+   FOREIGN KEY (product_id) REFERENCES product(id)
+ );
 
 CREATE TABLE product_review (
   id INT PRIMARY KEY AUTO_INCREMENT,
@@ -147,14 +147,14 @@ CREATE TABLE product_comment (
   FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE,
   FOREIGN KEY (parent_comment_id) REFERENCES product_comment(id) ON DELETE CASCADE
 );
-CREATE TABLE cart (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  user_id INT NOT NULL,
-  product_id INT NOT NULL,
-  amount INT NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
-  FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE
-);
+-- CREATE TABLE cart (
+--   id INT PRIMARY KEY AUTO_INCREMENT,
+--   user_id INT NOT NULL,
+--   product_id INT NOT NULL,
+--   amount INT NOT NULL,
+--   FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+--   FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE
+-- );
 
 CREATE TABLE `order` (
   id INT PRIMARY KEY AUTO_INCREMENT,
@@ -240,18 +240,18 @@ VALUES
 (4, 'Nikon D3500 DSLR Camera', '24.2MP DX-Format CMOS Sensor, EXPEED 4 Image Processor, Full HD 1080p Video Recording', 449.99, 15, null, ROUND(RAND() * (400 - 40) + 40), 0, NOW(), NOW()),
 (4, 'Fujifilm X-T3 Mirrorless Camera', '26.1MP APS-C X-Trans CMOS 4 Sensor, X-Processor 4 Image Processor, 4K UHD Video Recording', 1399.99, 5, null, ROUND(RAND() * (400 - 40) + 40), 0, NOW(), NOW());
 
-INSERT INTO cart (user_id, product_id, amount)
-VALUES 
-    (1, 3, 2),
-    (2, 8, 1),
-    (3, 1, 3),
-    (4, 11, 2),
-    (5, 4, 1),
-    (6, 13, 1),
-    (7, 9, 2),
-    (8, 7, 1),
-    (2, 12, 1),
-    (4, 5, 3);
+-- INSERT INTO cart (user_id, product_id, amount)
+-- VALUES 
+--     (1, 3, 2),
+--     (2, 8, 1),
+--     (3, 1, 3),
+--     (4, 11, 2),
+--     (5, 4, 1),
+--     (6, 13, 1),
+--     (7, 9, 2),
+--     (8, 7, 1),
+--     (2, 12, 1),
+--     (4, 5, 3);
     INSERT INTO `product_review` (`user_id`, `product_id`, `rating`) VALUES 
 (1, 1, 4),
 (2, 3, 5),
@@ -301,19 +301,19 @@ VALUES (5, '456 Elm St, Anytown, USA', '456 Elm St, Anytown, USA', 499.99, 'PayP
 INSERT INTO order_detail (order_id, product_id, quantity, price, discount, tax)
 VALUES (@order_id, 4, 2, 199.99, 0, 19.99),
 (@order_id, 5, 1, 99.99, 0, 9.99);
-select * from order_detail;
-select * from `order`;
-select * from user;
-select * from product;
-select * from cart;
-select * from carts;
-select * from product_review;
-select * from product_comment;
+-- select * from order_detail;
+-- select * from `order`;
+-- select * from user;
+-- select * from product;
+-- select * from cart;
+-- select * from carts;
+-- select * from product_review;
+-- select * from product_comment;
 -- update user 2 to use cart.
 -- change 10-03-2023 - change all password to 123456
 UPDATE `ecommerce`.`user` SET `password` = '$2a$10$te2j0GBuYFjBoHIIY78ETeRUwGlUynC/DLPBxXi8AKoM.QXvseExe';
 UPDATE `ecommerce`.`user` SET `user_role` = 'admin' WHERE (user.email = "johndoe@example.com");
-select * from user;
+
 ALTER TABLE user ADD reset_password_token VARCHAR(255);
 -- end 10-03-2023
 -- select `order`.* from `order` join order_detail on `order`.id=order_detail.id 
@@ -451,6 +451,6 @@ VALUES
 ('Camera Drone', 'Drone equipped with a high-resolution camera for capturing stunning aerial photos and videos.', 449.99, 18, 'https://m.media-amazon.com/images/I/51bURq5U6wL._AC_UL600_FMwebp_QL65_.jpg', 25, 0.05, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 6),
 ('Autonomous Drone', 'Advanced autonomous drone with intelligent flight modes and obstacle avoidance.', 799.99, 22, 'https://m.media-amazon.com/images/I/61cn2wOpGnL._AC_UL600_FMwebp_QL65_.jpg', 35, 0.1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 6),
 ('Drone Controller', 'A dedicated controller for drone piloting with precise controls and extended range.', 129.99, 20, 'https://m.media-amazon.com/images/I/61N20OJMa-L._AC_UL600_FMwebp_QL65_.jpg', 20, 0.05, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 6);
-ALTER TABLE carts
-DROP FOREIGN KEY carts_ibfk_1,
-ADD CONSTRAINT carts_ibfk_2 FOREIGN KEY (user_id) REFERENCES user(id);
+-- ALTER TABLE carts
+-- DROP FOREIGN KEY carts_ibfk_1,
+-- ADD CONSTRAINT carts_ibfk_2 FOREIGN KEY (user_id) REFERENCES user(id);

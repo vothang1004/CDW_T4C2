@@ -144,7 +144,7 @@ public class ProductController {
 		ProductReviewDto productReviewDto = new ProductReviewDto();
 		productReviewDto.setId(productReview.getId());
 		productReviewDto.setUsername(productReview.getUser().getUsername());
-		productReviewDto.setProductId(productReview.getProduct().getId());
+		productReviewDto.setProductId((long) productReview.getProduct().getId());
 		productReviewDto.setRating(productReview.getRating());
 		productReviewDto.setCreateDate(productReview.getCreateDate());
 		return productReviewDto;

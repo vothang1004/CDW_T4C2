@@ -11,26 +11,27 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 public class CartSerializer extends JsonSerializer<Cart2> {
 
-	 @Override
-	    public void serialize(Cart2 cart, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-	        jsonGenerator.writeStartObject();
-	        jsonGenerator.writeNumberField("id", cart.getId());
-	        jsonGenerator.writeNumberField("userId", cart.getUserId());
-	        jsonGenerator.writeFieldName("productsWithAmount");
-	        jsonGenerator.writeStartObject();
-	        for (Map.Entry<Product, Integer> entry : cart.getProductsWithAmount().entrySet()) {
-	            jsonGenerator.writeFieldName(entry.getKey().getId().toString());
-	            jsonGenerator.writeStartObject();
-	            jsonGenerator.writeNumberField("id", entry.getKey().getId());
-	            jsonGenerator.writeStringField("name", entry.getKey().getName());
-	            jsonGenerator.writeStringField("description", entry.getKey().getDescription());
-	            jsonGenerator.writeNumberField("price", entry.getKey().getPrice());
-	            jsonGenerator.writeNumberField("amount", entry.getValue());
-	            jsonGenerator.writeEndObject();
-	        }
-	        jsonGenerator.writeEndObject();
-	        jsonGenerator.writeEndObject();
-	    }
+	@Override
+	public void serialize(Cart2 cart, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
+			throws IOException {
+		jsonGenerator.writeStartObject();
+		jsonGenerator.writeNumberField("id", cart.getId());
+		jsonGenerator.writeNumberField("userId", cart.getUserId());
+		jsonGenerator.writeFieldName("productsWithAmount");
+		jsonGenerator.writeStartObject();
+		for (Map.Entry<Product, Integer> entry : cart.getProductsWithAmount().entrySet()) {
+			jsonGenerator.writeFieldName(Integer.valueOf(entry.getKey().getId()).toString());
+			jsonGenerator.writeStartObject();
+			jsonGenerator.writeNumberField("id", entry.getKey().getId());
+			jsonGenerator.writeStringField("name", entry.getKey().getName());
+			jsonGenerator.writeStringField("description", entry.getKey().getDescription());
+			jsonGenerator.writeNumberField("price", entry.getKey().getPrice());
+			jsonGenerator.writeNumberField("amount", entry.getValue());
+			jsonGenerator.writeEndObject();
+		}
+		jsonGenerator.writeEndObject();
+		jsonGenerator.writeEndObject();
+	}
 //	@Override
 //	public void serialize(Cart cart, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
 //			throws IOException {
