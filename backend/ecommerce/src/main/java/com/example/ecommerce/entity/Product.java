@@ -27,7 +27,7 @@ public class Product {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private int id;
 
 //    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 //    @ManyToOne(fetch = FetchType.LAZY)
@@ -81,7 +81,7 @@ public class Product {
 	
 	// getters and setters
 
-	public Product(Long productId) {
+	public Product(int productId) {
 		// TODO Auto-generated constructor stub
 		id = productId;
 	}
@@ -109,11 +109,11 @@ public class Product {
 		this.isBestSelling = isBestSelling;
 	}
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

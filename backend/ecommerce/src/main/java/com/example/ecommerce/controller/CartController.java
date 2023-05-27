@@ -82,7 +82,7 @@ public class CartController {
 	}
 
 	@DeleteMapping("/products/{productId}/{amount}")
-	public Cart2 removeProductFromCart(HttpServletRequest request, @PathVariable Long productId,
+	public Cart2 removeProductFromCart(HttpServletRequest request, @PathVariable int productId,
 			@PathVariable Integer amount) {
 		Cart2 cart = getCartfromrequest(request);
 		Product product = new Product();
