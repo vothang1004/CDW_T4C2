@@ -6,13 +6,14 @@ import Category3 from "../../assets/images/Category3.png";
 import Category4 from "../../assets/images/Category4.png";
 import Category5 from "../../assets/images/Category5.png";
 import Category6 from "../../assets/images/Category6.png";
+import { Grid } from "@mui/material";
 
 function BestCategories() {
   return (
     <div className="py-5 flex flex-col gap-5">
       <h2 className="text-[26px] font-[700] text-center">Danh Mục Nổi Bật</h2>
-      <div className="flex">
-        <div className="basis-1/6 px-[10px]">
+      <Grid container spacing={2}>
+        <Grid item xs={6} sm={4} md={2}>
           <div
             className="flex flex-col gap-2 items-center px-[10px] py-[20px] bg-gray rounded-md
                 cursor-pointer hover:bg-gradient-to-tr from-black-gray group transition-all duration-[0.2s]"
@@ -24,8 +25,8 @@ function BestCategories() {
             />
             <span className="font-semibold group-hover:text-white">iPhone</span>
           </div>
-        </div>
-        <div className="basis-1/6 px-[10px]">
+        </Grid>
+        <Grid item xs={6} sm={4} md={2}>
           <div
             className="flex flex-col gap-2 items-center px-[10px] py-[20px] bg-gray rounded-md
                 cursor-pointer hover:bg-gradient-to-tr from-black-gray group transition-all duration-[0.2s]"
@@ -37,8 +38,8 @@ function BestCategories() {
             />
             <span className="font-semibold group-hover:text-white">Mac</span>
           </div>
-        </div>
-        <div className="basis-1/6 px-[10px]">
+        </Grid>
+        <Grid item xs={6} sm={4} md={2}>
           <div
             className="flex flex-col gap-2 items-center px-[10px] py-[20px] bg-gray rounded-md
                 cursor-pointer hover:bg-gradient-to-tr from-black-gray group transition-all duration-[0.2s]"
@@ -50,8 +51,8 @@ function BestCategories() {
             />
             <span className="font-semibold group-hover:text-white">iPad</span>
           </div>
-        </div>
-        <div className="basis-1/6 px-[10px]">
+        </Grid>
+        <Grid item xs={6} sm={4} md={2}>
           <div
             className="flex flex-col gap-2 items-center px-[10px] py-[20px] bg-gray rounded-md
                 cursor-pointer hover:bg-gradient-to-tr from-black-gray group transition-all duration-[0.2s]"
@@ -63,8 +64,8 @@ function BestCategories() {
             />
             <span className="font-semibold group-hover:text-white">Watch</span>
           </div>
-        </div>
-        <div className="basis-1/6 px-[10px]">
+        </Grid>
+        <Grid item xs={6} sm={4} md={2}>
           <div
             className="flex flex-col gap-2 items-center px-[10px] py-[20px] bg-gray rounded-md
                 cursor-pointer hover:bg-gradient-to-tr from-black-gray group transition-all duration-[0.2s]"
@@ -78,8 +79,8 @@ function BestCategories() {
               Âm thanh
             </span>
           </div>
-        </div>
-        <div className="basis-1/6 px-[10px]">
+        </Grid>
+        <Grid item xs={6} sm={4} md={2}>
           <div
             className="flex flex-col gap-2 items-center px-[10px] py-[20px] bg-gray rounded-md
                 cursor-pointer hover:bg-gradient-to-tr from-black-gray group transition-all duration-[0.2s]"
@@ -93,8 +94,8 @@ function BestCategories() {
               Phụ kiện
             </span>
           </div>
-        </div>
-      </div>
+        </Grid>
+      </Grid>
     </div>
   );
 }

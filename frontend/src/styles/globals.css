@@ -10,3 +10,6 @@
     @apply text-sm;
   }
 }
+.hidden-scroll::-webkit-scrollbar {
+  display: none;
+}

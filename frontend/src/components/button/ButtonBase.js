@@ -8,6 +8,7 @@ function ButtonBase({
   height = "42px",
   onClick = () => {},
   children,
+  ...props
 }) {
   return (
     <button
@@ -17,6 +18,7 @@ function ButtonBase({
       flex items-center justify-center ${
         fullWidth ? "w-full" : "w-fit"
       } ${classes} ${loading ? "bg-gray pointer-events-none" : ""}`}
+      {...props}
     >
       {loading ? (
         <div className="w-5 h-5 bg-transparent border-2 border-l-transparent border-white rounded-full animate-spin"></div>
