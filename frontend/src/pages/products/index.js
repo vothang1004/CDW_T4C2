@@ -7,9 +7,9 @@ import { MdFilterAlt } from "react-icons/md";
 import { AiOutlineSortAscending } from "react-icons/ai";
 import ButtonBase from "../../components/button/ButtonBase";
 import Product from "../../components/product/Product";
-import Pagination from "../../components/pagination/Pagination";
 import { axiosPublic } from "../../utils/https";
 import { useRouter } from "next/router";
+import { Box, Grid, Pagination, Stack } from "@mui/material";
 
 const limit = 12;
 function Products({ data }) {
@@ -43,7 +43,7 @@ function Products({ data }) {
   };
 
   // handle page change
-  const handlePageChange = (newPage) => {
+  const handlePageChange = (e, newPage) => {
     const url = generateUrl({ limit, page: newPage, sort: sort });
     router.push(url);
     setCurrentPage(newPage);
@@ -53,6 +53,7 @@ function Products({ data }) {
     const url = generateUrl({ limit, page: currentPage, sort: newSort });
     router.push(url);
     setSort(newSort);
+    setCurrentPage(1);
   };
   // handle search change
   const handleSearchChange = (value) => {
@@ -64,6 +65,7 @@ function Products({ data }) {
     });
     router.push(url);
     setSearch(value);
+    setCurrentPage(1);
   };
 
   // get products
@@ -80,7 +82,6 @@ function Products({ data }) {
       if (resp && resp.status === 200) {
         setProducts(resp.data.content);
         setTotalPage(resp.data.totalPages || 1);
-        setCurrentPage(1);
       }
     } catch (error) {
       console.log({ error });
@@ -116,10 +117,10 @@ function Products({ data }) {
           {/* Filter */}
           <div
             id="filters"
-            className="h-[45px] flex items-center justify-between bg-gray mt-5 rounded-md px-2 py-1"
+            className="h-auto flex items-center justify-between flex-wrap bg-gray mt-5 rounded-md px-2 py-1"
           >
             <div
-              className="border border-black round-md px-2 py-1 text-[12px] rounded-md flex relative
+              className="hidden md:flex border border-black round-md px-2 py-1 text-[12px] rounded-md relative
           items-center gap-2 cursor-pointer hover:bg-black hover:text-white transition-all duration-200"
             >
               <MdFilterAlt fontSize="14px" />
@@ -131,7 +132,7 @@ function Products({ data }) {
                 0
               </span> */}
             </div>
-            <div className="h-full flex items-center gap-2 text-[12px] bg-slate">
+            <div className="h-full flex items-center flex-wrap gap-2 text-[12px] bg-slate">
               <div className="flex items-center gap-1">
                 <AiOutlineSortAscending fontSize="14px" />
                 <span className="font-semibold">Xếp theo</span>
@@ -209,13 +210,13 @@ function Products({ data }) {
           {/* Products List */}
           <>
             {products?.length > 0 ? (
-              <div className="w-full flex flex-wrap mt-5">
-                {products.map((product, index) => (
-                  <div key={index} className="basis-1/4 p-[10px]">
+              <Grid container spacing={2}>
+                {products.map((product) => (
+                  <Grid key={product.id} item xs={6} sm={4} md={3}>
                     <Product data={product} />
-                  </div>
+                  </Grid>
                 ))}
-              </div>
+              </Grid>
             ) : (
               <p className="w-full text-center py-5 text-[13px] italic">
                 Không có sản phẩm
@@ -223,16 +224,20 @@ function Products({ data }) {
             )}
           </>
           {/* Pagination */}
-          <div className="w-full mt-5">
+          <Stack
+            direction="row"
+            justifyContent="center"
+            sx={{ padding: "20px 0" }}
+          >
             <Pagination
-              currentPage={currentPage}
-              totalPage={totalPage}
-              pageNearNumber={2}
-              showEndButton
+              count={totalPage}
+              page={currentPage}
+              onChange={handlePageChange}
               showFirstButton
-              onPageChange={handlePageChange}
+              showLastButton
+              color="primary"
             />
-          </div>
+          </Stack>
         </div>
       </MainLayout>
     </>
