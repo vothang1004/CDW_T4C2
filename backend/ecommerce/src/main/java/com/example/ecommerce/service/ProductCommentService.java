@@ -106,14 +106,21 @@ public class ProductCommentService {
 		dto.setCreateDate(comment.getCreateDate());
 		dto.setUser(comment.getUser().getUsername());
 		dto.setParentCommentId(comment.getParentComment() != null ? comment.getParentComment().getId() : null);
+//		dto.setSizeChild(comment.);
 		return dto;
 	}
 
 	public List<ProductCommentDto> getCommentsForProductAndParentId(Long productId, Long parentCommentId) {
-		List<ProductComment> comments = productCommentRepository.findByProductIdAndParentComment(productId,parentCommentId);
+		List<ProductComment> comments = productCommentRepository.findByProductIdAndParentComment(productId,
+				parentCommentId);
 		List<ProductCommentDto> commentDtos = new ArrayList<>();
 		for (ProductComment comment : comments) {
-			commentDtos.add(mapToDto(comment));
+			List<ProductComment> commentsChildSize = productCommentRepository.findByProductIdAndParentComment(productId,
+					comment.getId());
+			long l = commentsChildSize.size();
+			ProductCommentDto pcdto = mapToDto(comment);
+			pcdto.setSizeChild(l);
+			commentDtos.add(pcdto);
 		}
 		return commentDtos;
 	}
