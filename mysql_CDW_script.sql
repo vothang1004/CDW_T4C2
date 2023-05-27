@@ -16,8 +16,9 @@ CREATE TABLE products (
 CREATE TABLE carts (
   id int4 NOT NULL AUTO_INCREMENT PRIMARY KEY,
   user_id int NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES users(id)
+  FOREIGN KEY (user_id) REFERENCES user(id)
 );
+
 CREATE TABLE cart_products (
   id int4 NOT NULL AUTO_INCREMENT PRIMARY KEY,
   cart_id int4 NOT NULL,
@@ -447,3 +448,6 @@ VALUES
 ('Camera Drone', 'Drone equipped with a high-resolution camera for capturing stunning aerial photos and videos.', 449.99, 18, 'https://m.media-amazon.com/images/I/51bURq5U6wL._AC_UL600_FMwebp_QL65_.jpg', 25, 0.05, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 6),
 ('Autonomous Drone', 'Advanced autonomous drone with intelligent flight modes and obstacle avoidance.', 799.99, 22, 'https://m.media-amazon.com/images/I/61cn2wOpGnL._AC_UL600_FMwebp_QL65_.jpg', 35, 0.1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 6),
 ('Drone Controller', 'A dedicated controller for drone piloting with precise controls and extended range.', 129.99, 20, 'https://m.media-amazon.com/images/I/61N20OJMa-L._AC_UL600_FMwebp_QL65_.jpg', 20, 0.05, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 6);
+ALTER TABLE carts
+DROP FOREIGN KEY carts_ibfk_1,
+ADD CONSTRAINT carts_ibfk_2 FOREIGN KEY (user_id) REFERENCES user(id);

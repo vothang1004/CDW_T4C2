@@ -26,9 +26,17 @@ public class CartService {
 		Optional<Cart2> cart = cartRepository.findById(id);
 		return cart.orElse(null);
 	}
+
 	public Cart2 getCartByUserId(Long userId) {
-        return cartRepository.findByUserId(userId);
-    }
+		Cart2 cart = cartRepository.findByUserId(userId);
+		if (cart == null) {
+			cart = new Cart2(userId);
+			System.out.println("userId: "+userId);
+			cartRepository.save(cart);
+		}
+		return cart;
+	}
+
 	public Cart2 addCart(Cart2 cart) {
 		return cartRepository.save(cart);
 	}
@@ -76,7 +84,7 @@ public class CartService {
 		return cartRepository.save(cart);
 	}
 
-	public Cart2 removeProductFromCart(Long cartId, Product product) {
+	public Cart2 removeProductFromCart(Long cartId, Product product, int amount) {
 		Cart2 cart = getCartById(cartId);
 		if (cart == null) {
 			return null;
@@ -95,13 +103,13 @@ public class CartService {
 				break;
 			}
 		}
-		int amountafterminus = currentAmount - 1;
+		int amountafterminus = currentAmount - amount;
 		if (amountafterminus <= 0) {
 			productsWithAmount.remove(temp);
-		}else {
+		} else {
 			productsWithAmount.put(temp, amountafterminus);
 		}
-		
+
 //		cart.setProducts(products);
 		cart.setProductsWithAmount(productsWithAmount);
 		return cartRepository.save(cart);

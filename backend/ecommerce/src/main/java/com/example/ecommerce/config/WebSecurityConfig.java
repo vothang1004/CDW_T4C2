@@ -85,7 +85,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET, "/orders/pay-state").permitAll()
 				.antMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
 				
-				// all other requests need to be authenticated
+				// all other requests need to be authenticated - check by authentication object is not null.
 				.anyRequest().authenticated().and()
 				
 				// make sure we use stateless session; session won't be used to store user's
