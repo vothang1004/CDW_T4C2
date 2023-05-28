@@ -24,6 +24,16 @@ public class JacksonConfig {
 		return objectMapper;
 	}
 
+	/**
+	 * JavaTimeModule is a module provided by the Jackson JSON library that adds
+	 * support for Java 8 Date and Time API (JSR-310) types serialization and
+	 * deserialization. It allows Jackson to handle Java 8 date and time objects,
+	 * such as LocalDate, LocalDateTime, ZonedDateTime, and more, when converting
+	 * JSON data to Java objects and vice versa.
+	 * 
+	 * @return
+	 */
+
 	@Bean
 	public JavaTimeModule javaTimeModule() {
 		return new JavaTimeModule();

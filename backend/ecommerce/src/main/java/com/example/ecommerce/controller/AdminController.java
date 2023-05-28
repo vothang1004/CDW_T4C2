@@ -63,12 +63,12 @@ public class AdminController {
 	}
 
 	@PutMapping("/product/{id}")
-	public Product updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
+	public Product updateProduct(@PathVariable("id") int id, @RequestBody Product product) {
 		return productService.updateProduct(id, product);
 	}
 
 	@DeleteMapping("/product/{id}")
-	public void deleteProduct(@PathVariable("id") Long id) {
+	public void deleteProduct(@PathVariable("id") int id) {
 		productService.deleteProduct(id);
 	}
 

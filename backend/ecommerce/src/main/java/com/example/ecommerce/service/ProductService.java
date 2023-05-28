@@ -39,7 +39,7 @@ public class ProductService {
 		return productRepository.findAll();
 	}
 
-	public Product getProductById(Long id) {
+	public Product getProductById(int id) {
 		Optional<Product> product = productRepository.findById(id);
 		if (!product.isPresent() || !product.isEmpty()) {
 
@@ -53,7 +53,7 @@ public class ProductService {
 		return productRepository.save(product);
 	}
 
-	public Product updateProduct(Long id, Product updatedProduct) {
+	public Product updateProduct(int id, Product updatedProduct) {
 		Product product = getProductById(id);
 		if (product == null) {
 			return null;
@@ -71,7 +71,7 @@ public class ProductService {
 		return productRepository.save(product);
 	}
 
-	public void deleteProduct(Long id) {
+	public void deleteProduct(int id) {
 		productRepository.deleteById(id);
 	}
 
@@ -91,7 +91,7 @@ public class ProductService {
 		return productRepository.findAll(pageable).getContent();
 	}
 
-	public List<Product> getSuggestedProducts(Long productId) {
+	public List<Product> getSuggestedProducts(int productId) {
 		// find the product with the given id
 		Optional<Product> optionalProduct = productRepository.findById(productId);
 		if (optionalProduct.isEmpty()) {

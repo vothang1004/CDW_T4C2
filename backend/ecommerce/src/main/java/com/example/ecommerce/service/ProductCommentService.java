@@ -35,7 +35,7 @@ public class ProductCommentService {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ProductComment addProductComment(Long productId, ProductCommentDto productCommentDto, User user) {
+	public ProductComment addProductComment(int productId, ProductCommentDto productCommentDto, User user) {
 		Product product = productService.getProductById(productId);
 
 		ProductComment parentComment = null;
@@ -78,7 +78,7 @@ public class ProductCommentService {
 		return savedCommentDto;
 	}
 
-	public List<ProductComment> getProductComments(Long productId) {
+	public List<ProductComment> getProductComments(int productId) {
 		Product product = productService.getProductById(productId);
 		return productCommentRepository.findByProduct(product);
 	}
