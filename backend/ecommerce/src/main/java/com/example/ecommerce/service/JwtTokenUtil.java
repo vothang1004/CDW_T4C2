@@ -33,6 +33,7 @@ public class JwtTokenUtil {
 	private String secret;
 	@Autowired
 	private UserService userService;
+
 	// retrieve username from jwt token
 	public String getUsernameFromToken(String token) {
 		return getClaimFromToken(token, Claims::getSubject);
@@ -53,10 +54,12 @@ public class JwtTokenUtil {
 		long userId = this.getUserIdFromBearToken(token);
 		return userId;
 	}
+
 	public User getUserByRequest(HttpServletRequest request) {
 		long id = getIdUserByRequest(request);
 		return userService.getUserById(id);
 	}
+
 	public String preExecuteToken(String token) {
 //    	System.out.println("run here? 1");
 //	    String token = request.getHeader("Authorization");
@@ -87,6 +90,25 @@ public class JwtTokenUtil {
 //                .getSubject();
 //        return username;
 //    }
+	// @FunctionalInterface
+	public void threadr() {
+		Thread t = new Thread(() -> {
+			doSomething();
+		});
+	}
+	public void doSomething() {
+		System.out.println("do a");
+		System.out.println("do b");
+	}
+	/**
+	 * --paramater(int a,int b) -> implementation{ a + b} and return. --lamda is not
+	 * create new Object implementation, not annonymous class. TypeInterface in = ()
+	 * -> {}; if TypeInterface{void do();} (int a,int b) -> a+b public int plus (int
+	 * a,int b) { return a+ b; }
+	 * 
+	 * @param token
+	 * @return
+	 */
 	// retrieve expiration date from jwt token
 	public Date getExpirationDateFromToken(String token) {
 		return getClaimFromToken(token, Claims::getExpiration);

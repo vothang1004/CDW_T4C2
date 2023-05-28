@@ -17,7 +17,7 @@ import com.example.ecommerce.entity.Category;
 import com.example.ecommerce.entity.Product;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Integer> {
 	List<Product> findBynameContainingIgnoreCase(String keyword);
 
 	List<Product> findByCategory(Category category);

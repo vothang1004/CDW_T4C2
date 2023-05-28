@@ -103,7 +103,7 @@ public class ProductController {
 
 	// usable
 	@GetMapping("/{id}")
-	public Product getProductById(@PathVariable("id") Long id) {
+	public Product getProductById(@PathVariable("id") int id) {
 		productService.incrementViewCount(id);
 		return productService.getProductById(id);
 	}
@@ -128,7 +128,7 @@ public class ProductController {
 	}
 
 	@GetMapping("/suggested-products/{product_id}")
-	public ResponseEntity<List<Product>> getSuggestedProducts(@PathVariable("product_id") Long productId) {
+	public ResponseEntity<List<Product>> getSuggestedProducts(@PathVariable("product_id") int productId) {
 		List<Product> suggestedProducts = productService.getSuggestedProducts(productId);
 		return new ResponseEntity<>(suggestedProducts, HttpStatus.OK);
 	}
@@ -151,7 +151,7 @@ public class ProductController {
 	}
 
 	@PostMapping("/{productId}/ratings")
-	public ResponseEntity<String> addProductRating(HttpServletRequest request, @PathVariable Long productId,
+	public ResponseEntity<String> addProductRating(HttpServletRequest request, @PathVariable int productId,
 			@RequestBody Map<String, Integer> requestBody) {
 		Integer rating = requestBody.get("rating");
 		if (rating < 0 || rating > 5) {
@@ -177,7 +177,7 @@ public class ProductController {
 	}
 
 	@PostMapping("/{productId}/comments")
-	public ResponseEntity<?> addComment(HttpServletRequest request, @PathVariable Long productId,
+	public ResponseEntity<?> addComment(HttpServletRequest request, @PathVariable int productId,
 			@RequestBody ProductCommentDto productComment) {
 //		productComment.setId(productId);
 		User user = tokenService.getUserByRequest(request);

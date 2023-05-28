@@ -85,7 +85,8 @@ public class OrderService {
 		for (OrderDetail detail : order.getOrderdetails()) {
 			detail.setOrder(order);
 			// get full product information.
-			Product p = productRepository.findById(detail.getProduct().getId().longValue()).get();
+			int l = detail.getProduct().getId();
+			Product p = productRepository.findById(l).get();
 			detail.setProduct(p);
 			// calculate price
 			BigDecimal quantity = new BigDecimal(detail.getQuantity());

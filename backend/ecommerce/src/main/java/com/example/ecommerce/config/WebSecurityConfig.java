@@ -59,20 +59,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		// We don't need CSRF for this
-		httpSecurity
-				.cors().and() // Enable CORS support
+		httpSecurity.cors().and() // Enable CORS support
 				.csrf().disable()
 				// authenticate this particular request
-				.authorizeRequests().antMatchers(HttpMethod.POST, "/authenticate").permitAll()
-				// allow access to /users without authentication
+				.authorizeRequests()
+				.antMatchers(HttpMethod.POST, "/authenticate").permitAll()
+				// allow access to /users without authentication -test only
 //	            .antMatchers(HttpMethod.GET, "/users").permitAll()
 				.antMatchers(HttpMethod.POST, "/users/register").permitAll()
 				.antMatchers(HttpMethod.POST, "/users/forgot-password").permitAll()
 				.antMatchers(HttpMethod.POST, "/users/forgot-password-mono").permitAll()
 				.antMatchers(HttpMethod.GET, "/users/reset-password").permitAll()
 				.antMatchers(HttpMethod.POST, "/users/reset-password/**").permitAll()
-				.antMatchers(HttpMethod.GET, "/products").permitAll().antMatchers(HttpMethod.GET, "/products/search")
-				.permitAll().antMatchers(HttpMethod.GET, "/products/{product_id}").permitAll()
+				.antMatchers(HttpMethod.GET, "/products").permitAll()
+				.antMatchers(HttpMethod.GET, "/products/search").permitAll()
+				.antMatchers(HttpMethod.GET, "/products/{product_id}").permitAll()
 				.antMatchers(HttpMethod.GET, "/products/latest").permitAll()
 				.antMatchers(HttpMethod.GET, "/products/most-viewed-products").permitAll()
 				.antMatchers(HttpMethod.GET, "/products/suggested-products/{product_id}").permitAll()
@@ -84,15 +85,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET, "/orders/pay-method").permitAll()
 				.antMatchers(HttpMethod.GET, "/orders/pay-state").permitAll()
 				.antMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
-				
-				// all other requests need to be authenticated - check by authentication object is not null.
-				.anyRequest().authenticated().and()
-				.cors().and()
+
+				// all other requests need to be authenticated - check by authentication object
+				// is not null.
+				.anyRequest().authenticated().and().cors().and()
 				// make sure we use stateless session; session won't be used to store user's
 				// state.
+				// not create or use an HTTP session to store the user's authentication
+				// information.
+				// Instead, each request will be treated independently,
+				// and the user's authentication will be validated on each request.
 				.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-				;
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 		// Add a filter to validate the tokens with every request
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
