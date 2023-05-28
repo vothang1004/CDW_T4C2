@@ -159,7 +159,8 @@ public class OrderService {
 //	    System.out.println("run he"+startDate);
 		List<Order> orders = orderRepository.findByOrderDateBetween(startDate, endDate);
 		for (Order order : orders) {
-			revenue = revenue.add(order.getTotalPrice());
+			if (order.getPaymentState().equals(PaymentState.paid))
+				revenue = revenue.add(order.getTotalPrice());
 		}
 		return revenue;
 	}
