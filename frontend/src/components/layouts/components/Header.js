@@ -13,6 +13,7 @@ import { useAlertContext } from "../../../contexts/alert/AlertProvider";
 import { asyncGetCart } from "../../../redux/actions/cart.action";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { logoutUser } from "../../../redux/actions/auth.action";
+import ModalUser from "../../modal/ModalUser";
 
 function Header({ onSearch, defaultSearchText }) {
   const login = useSelector((state) => state.auth.login);
@@ -22,6 +23,7 @@ function Header({ onSearch, defaultSearchText }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [anchorMenu, setAnchorMenu] = useState(null);
+  const [openModalUser, setOpenModalUser] = useState(false);
 
   // handle logout
   const handleLogout = () => {
@@ -29,17 +31,37 @@ function Header({ onSearch, defaultSearchText }) {
     logoutUser({ dispatch, alert });
   };
   useEffect(() => {
-    asyncGetCart({ alert, axios: axiosPrivate, dispatch });
-  }, []);
+    if (login) {
+      asyncGetCart({ alert, axios: axiosPrivate, dispatch });
+    }
+  }, [login]);
 
   return (
     <>
+      {openModalUser && (
+        <ModalUser
+          open={openModalUser}
+          onClose={() => setOpenModalUser(false)}
+        />
+      )}
       <Menu
         anchorEl={anchorMenu}
         open={!!anchorMenu}
         onClose={() => setAnchorMenu(null)}
       >
-        <MenuItem>Thông tin tài khoản</MenuItem>
+        <MenuItem onClick={() => setOpenModalUser(true)}>
+          Thông tin tài khoản
+        </MenuItem>
+        {login?.user?.userRole === "admin" ? (
+          <MenuItem onClick={() => router.push("/admin/home")}>
+            Quản trị viên
+          </MenuItem>
+        ) : (
+          <Link href="/order">
+            <MenuItem>Đơn hàng của tôi</MenuItem>
+          </Link>
+        )}
+
         <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
       </Menu>
       <header className="w-full h-[60px] text-white bg-black relative z-50">
@@ -105,22 +127,22 @@ function Header({ onSearch, defaultSearchText }) {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <div className="h-[40px] text-white flex gap-1 items-center p-1 rounded cursor-pointer hover:brightness-90">
-                <span className="relative">
-                  <span
-                    className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 inline-flex
+              <Link href="/cart">
+                <div className="h-[40px] text-white flex gap-1 items-center p-1 rounded cursor-pointer hover:brightness-90">
+                  <span className="relative">
+                    <span
+                      className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 inline-flex
                 items-center justify-center w-4 h-4 rounded-full bg-red text-white text-[8px] border border-solid border-white"
-                  >
-                    {listCart?.productsWithAmount
-                      ? Object.keys(listCart?.productsWithAmount).length
-                      : 0}
+                    >
+                      {listCart?.productsWithAmount
+                        ? Object.keys(listCart?.productsWithAmount).length
+                        : 0}
+                    </span>
+                    <BsCart2 size="20px" />
                   </span>
-                  <BsCart2 size="20px" />
-                </span>
-                <Link href="/cart">
                   <p className="text-[10px] leading-[10px]">Giỏ hàng</p>
-                </Link>
-              </div>
+                </div>
+              </Link>
             </div>
           </div>
         </div>

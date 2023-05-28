@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MainLayout from "../../components/layouts/MainLayout";
 import Image from "next/image";
 import Head from "next/head";
@@ -9,13 +9,15 @@ import ButtonBase from "../../components/button/ButtonBase";
 import Product from "../../components/product/Product";
 import { axiosPublic } from "../../utils/https";
 import { useRouter } from "next/router";
-import { Box, Grid, Pagination, Stack } from "@mui/material";
+import { Grid, Pagination, Stack } from "@mui/material";
+import { useSearchContext } from "../../contexts/search/SearchProvider";
 
 const limit = 12;
 function Products({ data }) {
   const router = useRouter();
+  const [category, setCategory] = useState(router?.query?.category);
   const [products, setProducts] = useState(data.content || []);
-  const [search, setSearch] = useState(router.query.search || "");
+  const [search] = useSearchContext();
   const [currentPage, setCurrentPage] = useState(
     Number(router.query.page) || 1
   );
@@ -39,6 +41,9 @@ function Products({ data }) {
     if (search) {
       url += `&search=${search}`;
     }
+    if (category) {
+      url += `&category=${category}`;
+    }
     return url;
   };
 
@@ -55,29 +60,16 @@ function Products({ data }) {
     setSort(newSort);
     setCurrentPage(1);
   };
-  // handle search change
-  const handleSearchChange = (value) => {
-    const url = generateUrl({
-      limit,
-      page: currentPage,
-      sort: sort,
-      search: value,
-    });
-    router.push(url);
-    setSearch(value);
-    setCurrentPage(1);
-  };
 
   // get products
   const getProducts = async () => {
     try {
-      let url = `/products?limit=${limit}&page=${currentPage}`;
-      if (sort) {
-        url += `&sortBy=${sort.sortBy}&sortDir=${sort.sortDir}`;
-      }
-      if (search) {
-        url += `&search=${search}`;
-      }
+      const url = generateUrl({
+        limit,
+        page: currentPage,
+        sort,
+        search: search,
+      });
       const resp = await axiosPublic.get(url);
       if (resp && resp.status === 200) {
         setProducts(resp.data.content);
@@ -90,13 +82,17 @@ function Products({ data }) {
 
   useEffect(() => {
     getProducts();
-  }, [currentPage, sort, search]);
+  }, [currentPage, sort, search, category]);
+  useEffect(() => {
+    setCategory(router?.query?.category || 0);
+    setCurrentPage(1);
+  }, [router?.query?.category]);
   return (
     <>
       <Head>
         <title>Danh sách sản phẩm</title>
       </Head>
-      <MainLayout defaultSearchText={search} onSearch={handleSearchChange}>
+      <MainLayout>
         <div className="shadow-md h-[45px]">
           <div className="container mx-auto h-full px-4 flex items-center gap-2 text-[12px]">
             <span>Trang chủ</span>

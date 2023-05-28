@@ -5,6 +5,7 @@ import { styled } from "@mui/system";
 import ButtonBase from "../../components/button/ButtonBase";
 import { axiosPublic } from "../../utils/https";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { useAlertContext } from "../../contexts/alert/AlertProvider";
 
 const blue = {
   100: "#DAECFF",
@@ -64,13 +65,16 @@ const StyledTextarea = styled(TextareaAutosize)(
 
 function Comment({ idProduct }) {
   const axiosPrivate = useAxiosPrivate();
+  const { alert } = useAlertContext();
   const [rating, setRating] = useState(5);
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
 
   // send comment and rating
   const handleSend = () => {
-    if (!commentText) return;
+    if (!commentText) {
+      return;
+    }
     Promise.all([
       axiosPrivate.post(`/products/${idProduct}/ratings`, {
         rating: rating,
@@ -84,6 +88,7 @@ function Comment({ idProduct }) {
         getComment();
         setCommentText("");
         setRating(5);
+        alert({ message: "Cảm ơn bạn đã gửi đánh giá" });
       })
       .catch((error) => {
         console.log(error);
@@ -133,6 +138,7 @@ function Comment({ idProduct }) {
           />
         </Stack>
         <ButtonBase
+          disabled={!commentText}
           onClick={handleSend}
           classes="inline-block bg-black text-white"
         >
@@ -160,7 +166,7 @@ function Comment({ idProduct }) {
           }}
         >
           {comments.map((comment) => (
-            <CommentItem
+            <CommentBox
               key={comment.id}
               comment={comment}
               idProduct={idProduct}
@@ -178,18 +184,91 @@ function Comment({ idProduct }) {
 
 export default Comment;
 
-const CommentItem = ({ idProduct, comment, getComment }) => {
+const CommentBox = ({ idProduct, comment, getComment }) => {
+  const [childrenComment, setChildrenComment] = useState([]);
+  return (
+    <Stack spacing={1}>
+      <CommentItem
+        idProduct={idProduct}
+        comment={comment}
+        getComment={getComment}
+        setChildrenComment={setChildrenComment}
+      />
+      {childrenComment && childrenComment.length > 0 && (
+        <Stack sx={{ paddingLeft: "40px" }}>
+          {childrenComment.map((child) => (
+            <CommentBox2
+              key={child.id}
+              idProduct={idProduct}
+              comment={child}
+              getComment={getComment}
+            />
+          ))}
+        </Stack>
+      )}
+    </Stack>
+  );
+};
+const CommentBox2 = ({ idProduct, comment, getComment }) => {
+  const [childrenComment, setChildrenComment] = useState([]);
+  return (
+    <Stack spacing={1}>
+      <CommentItem
+        idProduct={idProduct}
+        comment={comment}
+        getComment={getComment}
+        setChildrenComment={setChildrenComment}
+      />
+      {childrenComment && childrenComment.length > 0 && (
+        <Stack sx={{ paddingLeft: "40px" }}>
+          {childrenComment.map((child) => (
+            <CommentBox
+              key={child.id}
+              idProduct={idProduct}
+              comment={child}
+              getComment={getComment}
+            />
+          ))}
+        </Stack>
+      )}
+    </Stack>
+  );
+};
+
+const CommentItem = ({
+  idProduct,
+  comment,
+  getComment,
+  setChildrenComment,
+}) => {
   const axiosPrivate = useAxiosPrivate();
   const [openReply, setOpenReply] = useState(false);
   const [commentText, setCommentText] = useState("");
 
   const handleReply = async () => {
+    if (!commentText) return;
     const resp = await axiosPrivate.post(`/products/${idProduct}/comments`, {
       comment: commentText,
       parentCommentId: comment.id,
     });
-    if (resp && resp.status === 200) {
+    if (resp && resp.status >= 200 && resp.status < 300) {
+      setOpenReply(false);
+      setCommentText("");
       getComment();
+      handleGetChildrenComment();
+    }
+  };
+  // handle get children comment
+  const handleGetChildrenComment = async () => {
+    try {
+      const resp = await axiosPublic.get(
+        `/products/${idProduct}/comments/parent/${comment.id}`
+      );
+      if (resp && resp.status === 200) {
+        setChildrenComment(resp.data);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -205,6 +284,14 @@ const CommentItem = ({ idProduct, comment, getComment }) => {
             {comment.comment}
           </Typography>
           <Stack direction="row" justifyContent="flex-end" spacing={"5px"}>
+            {comment?.sizeChild > 0 && (
+              <Typography
+                onClick={handleGetChildrenComment}
+                sx={{ fontWeight: 550, cursor: "pointer", marginRight: "20px" }}
+              >
+                {`xem ${comment.sizeChild} câu trả lời`}
+              </Typography>
+            )}
             {openReply && (
               <Typography
                 sx={{
@@ -244,6 +331,6 @@ const CommentItem = ({ idProduct, comment, getComment }) => {
           )}
         </Paper>
       </Stack>
-    </Box>  
+    </Box>
   );
 };

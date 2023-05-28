@@ -2,6 +2,7 @@ import React from "react";
 import { Box, IconButton, Modal, Stack, Typography } from "@mui/material";
 import ButtonBase from "../button/ButtonBase";
 import { IoCloseCircleOutline } from "react-icons/io5";
+import { LoadingButton } from "@mui/lab";
 
 function ModalBase({
   children,
@@ -10,10 +11,12 @@ function ModalBase({
   title,
   disableAction,
   onConfirm,
+  confirmText,
+  loading,
   width = "300px",
 }) {
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal open={open} onClose={onClose} disableAutoFocus>
       <Box
         sx={{
           width: width,
@@ -55,12 +58,17 @@ function ModalBase({
               Đóng
             </ButtonBase>
             {!!onConfirm && (
-              <ButtonBase
+              <LoadingButton
+                loading={loading}
                 onClick={onConfirm}
-                className="bg-black px-4 py-2 rounded-md text-white hover:bg-red hover:text-white"
+                sx={{
+                  backgroundColor: "primary.main",
+                  color: "#fff",
+                  "&:hover": { backgroundColor: "secondary.main" },
+                }}
               >
-                Đồng ý
-              </ButtonBase>
+                {confirmText || "Đồng ý"}
+              </LoadingButton>
             )}
           </Stack>
         )}

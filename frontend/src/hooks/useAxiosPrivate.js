@@ -2,10 +2,14 @@ import { useEffect } from "react";
 import { axiosPrivate } from "../utils/https";
 import useToken from "./useToken";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { logout } from "../redux/reducers/auth.reducer";
+import { clearCart } from "../redux/reducers/cart.reducer";
 
 const useAxiosPrivate = () => {
   const router = useRouter();
   const accessToken = useToken();
+  const dispatch = useDispatch();
 
   const requestInterceptor = axiosPrivate.interceptors.request.use(
     function (config) {
@@ -24,6 +28,8 @@ const useAxiosPrivate = () => {
     },
     async function (error) {
       if (error?.response?.status === 401) {
+        dispatch(logout());
+        dispatch(clearCart());
         return router.push("/login");
       } else {
         return error;

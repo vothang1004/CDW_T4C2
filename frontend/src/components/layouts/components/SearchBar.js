@@ -1,15 +1,30 @@
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useRef, useState } from "react";
 import { FiSearch } from "react-icons/fi";
-import { useSelector } from "react-redux";
+import { useSearchContext } from "../../../contexts/search/SearchProvider";
 
-function SearchBar({ onSearch = () => {}, defaultSearchText = "" }) {
-  const [searchText, setSearchText] = useState(defaultSearchText || "");
+function SearchBar() {
+  const router = useRouter();
+  const [searchText, setSearchText] = useSearchContext();
+  const [searchSelf, setSearchSefl] = useState(searchText || "");
+  const timerRef = useRef();
 
   const handleSearch = (e) => {
     if (e.key === "Enter") {
-      onSearch(searchText);
+      router.push({
+        pathname: "/products",
+        query: {
+          search: searchText,
+        },
+      });
     }
   };
+  useEffect(() => {
+    timerRef.current = setTimeout(() => {
+      setSearchText(searchSelf);
+    }, 500);
+    return () => clearTimeout(timerRef.current);
+  }, [searchSelf]);
 
   return (
     <div className="flex h-[40px] w-[410px] items-center bg-white rounded-md pr-2">
@@ -17,8 +32,8 @@ function SearchBar({ onSearch = () => {}, defaultSearchText = "" }) {
         className="bg-transparent flex-grow h-full border-none outline-none px-2 text-black text-sm"
         type="text"
         placeholder="Tìm sản phẩm..."
-        value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}
+        value={searchSelf}
+        onChange={(e) => setSearchSefl(e.target.value)}
         onKeyUp={handleSearch}
       />
       <span
