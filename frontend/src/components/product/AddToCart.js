@@ -27,9 +27,9 @@ function AddToCart({ product, isDetail }) {
         price: product.price,
       };
       await asyncAddToCart({
-        data: dataCartPost,
-        axios: axiosPrivate,
         alert,
+        axios: axiosPrivate,
+        data: dataCartPost,
         dispatch,
       });
     }

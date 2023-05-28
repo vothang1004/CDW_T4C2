@@ -1,6 +1,6 @@
 import { axiosPublic } from "../../utils/https";
-import { login, logout } from "../reducers/auth.reducer";
-import { getCart } from "../reducers/cart.reducer";
+import { editUser, login, logout } from "../reducers/auth.reducer";
+import { clearCart } from "../reducers/cart.reducer";
 
 // login
 const loginUser = async ({
@@ -33,11 +33,27 @@ const registerUser = async ({ data, router }) => {
     console.log(error);
   }
 };
+// update user
+const updateUser = async ({ data, axios, alert, dispatch }) => {
+  try {
+    const resp = await axios.put("/users", data);
+    if (resp && resp.status === 200) {
+      dispatch(editUser(resp.data));
+    } else {
+      alert({
+        message: resp?.response?.data?.message || "Internal server error",
+      });
+    }
+  } catch (error) {
+    alert({ message: "Internal server error" });
+    console.log(error);
+  }
+};
 // logout user
 const logoutUser = ({ dispatch, alert }) => {
   dispatch(logout());
-  dispatch(getCart(null));
+  dispatch(clearCart());
   alert({ message: "Đăng xuất thành công" });
 };
 
-export { loginUser, registerUser, logoutUser };
+export { loginUser, registerUser, updateUser, logoutUser };

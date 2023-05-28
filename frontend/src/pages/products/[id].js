@@ -7,13 +7,11 @@ import {
   Box,
   Container,
   Grid,
-  IconButton,
   Paper,
   Rating,
   Stack,
   Typography,
 } from "@mui/material";
-import { BiMinus, BiPlus } from "react-icons/bi";
 import { axiosPublic } from "../../utils/https";
 import Comment from "./Comment";
 import AddToCart from "../../components/product/AddToCart";
@@ -124,41 +122,6 @@ function DetailProduct() {
                       <Typography>Đánh giá:</Typography>
                       <Rating value={rating || 0} readOnly />
                     </Stack>
-                    <div className="flex items-center gap-x-2">
-                      <div className="">Số lượng: </div>
-                      <Stack
-                        direction="row"
-                        spacing={1}
-                        alignItems="center"
-                        sx={{
-                          border: "1px solid #ededed",
-                          padding: "5px",
-                          borderRadius: "20px",
-                        }}
-                      >
-                        <IconButton
-                          size="small"
-                          sx={{
-                            backgroundColor: "#c11c2a",
-                            color: "white",
-                            "&:hover": { backgroundColor: "#c11c2a" },
-                          }}
-                        >
-                          <BiMinus size="18px" />
-                        </IconButton>
-                        <Typography sx={{ fontSize: "13px" }}>1</Typography>
-                        <IconButton
-                          size="small"
-                          sx={{
-                            backgroundColor: "#c11c2a",
-                            color: "white",
-                            "&:hover": { backgroundColor: "#c11c2a" },
-                          }}
-                        >
-                          <BiPlus size="18px" />
-                        </IconButton>
-                      </Stack>
-                    </div>
                     <div className="flex gap-2 mt-4">
                       <ButtonBase classes="bg-black text-white">
                         Mua ngay
