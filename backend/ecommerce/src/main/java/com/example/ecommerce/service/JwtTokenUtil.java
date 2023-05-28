@@ -111,12 +111,14 @@ public class JwtTokenUtil {
 	 */
 	// retrieve expiration date from jwt token
 	public Date getExpirationDateFromToken(String token) {
-		return getClaimFromToken(token, Claims::getExpiration);
+		//Claims::getExpiration  - method reference  - Class::method
+		//-- claims -> claims.getExpiration() - ( Claims c) -> c.getExpiration()
+		return getClaimFromToken(token,Claims::getExpiration);
 	}
 
 	public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
 		final Claims claims = getAllClaimsFromToken(token);
-		return claimsResolver.apply(claims);
+		return claimsResolver.apply(claims);// get claim return T
 	}
 
 	// for retrieving any information from token we will need the secret key
