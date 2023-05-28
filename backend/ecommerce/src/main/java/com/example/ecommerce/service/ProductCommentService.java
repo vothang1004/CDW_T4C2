@@ -55,7 +55,7 @@ public class ProductCommentService {
 		return productCommentRepository.save(productComment);
 	}
 
-	public ProductCommentDto replyProductComment(Long productId, Long commentId, ProductCommentDto productCommentDto,
+	public ProductCommentDto replyProductComment(int productId, Long commentId, ProductCommentDto productCommentDto,
 			User user) {
 		// Find the parent comment
 		ProductComment parentComment = getProductCommentById(commentId);
@@ -83,7 +83,7 @@ public class ProductCommentService {
 		return productCommentRepository.findByProduct(product);
 	}
 
-	public List<ProductCommentDto> getCommentsForProduct(Long productId) {
+	public List<ProductCommentDto> getCommentsForProduct(int productId) {
 		List<ProductComment> comments = productCommentRepository.findByProductId(productId);
 		List<ProductCommentDto> commentDtos = new ArrayList<>();
 		for (ProductComment comment : comments) {
@@ -110,7 +110,7 @@ public class ProductCommentService {
 		return dto;
 	}
 
-	public List<ProductCommentDto> getCommentsForProductAndParentId(Long productId, Long parentCommentId) {
+	public List<ProductCommentDto> getCommentsForProductAndParentId(int productId, Long parentCommentId) {
 		List<ProductComment> comments = productCommentRepository.findByProductIdAndParentComment(productId,
 				parentCommentId);
 		List<ProductCommentDto> commentDtos = new ArrayList<>();

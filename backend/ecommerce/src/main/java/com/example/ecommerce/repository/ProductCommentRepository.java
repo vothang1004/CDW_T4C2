@@ -11,11 +11,11 @@ import com.example.ecommerce.entity.ProductComment;
 public interface ProductCommentRepository extends JpaRepository<ProductComment, Long> {
 	List<ProductComment> findByProduct(Product product);
 
-	List<ProductComment> findByProductId(Long productId);
+	List<ProductComment> findByProductId(int productId);
 
 	// :parentCommentId IS NULL OR
 //	@Query("SELECT p FROM ProductComment p WHERE ( p.parentComment = :parentCommentId) AND (p.product.id = :productId)")
 	@Query("SELECT p FROM ProductComment p WHERE (:parentCommentId IS NULL AND (p.parentComment IS NULL AND p.product.id = :productId)) OR (p.parentComment.id = :parentCommentId AND p.product.id = :productId)")
-	List<ProductComment> findByProductIdAndParentComment(Long productId, Long parentCommentId);
+	List<ProductComment> findByProductIdAndParentComment(int productId, Long parentCommentId);
 
 }

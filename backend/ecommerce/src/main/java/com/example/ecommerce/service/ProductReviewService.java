@@ -18,7 +18,7 @@ public class ProductReviewService {
 		return productReviewRepository.save(productReview);
 	}
 
-	public List<ProductReview> findByProductId(Long productId) {
+	public List<ProductReview> findByProductId(int productId) {
 		// TODO Auto-generated method stub
 		return productReviewRepository.findByProductId(productId);
 	}

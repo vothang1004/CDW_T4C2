@@ -135,7 +135,7 @@ public class ProductController {
 	}
 
 	@GetMapping("/{productId}/ratings")
-	public ResponseEntity<List<ProductReviewDto>> getProductRatings(@PathVariable Long productId) {
+	public ResponseEntity<List<ProductReviewDto>> getProductRatings(@PathVariable int productId) {
 		List<ProductReviewDto> productReviews = productReviewService.findByProductId(productId).stream()
 				.map(this::EntityToDto).collect(Collectors.toList());
 		return ResponseEntity.ok(productReviews);
@@ -187,7 +187,7 @@ public class ProductController {
 	}
 
 	@PostMapping("/{productId}/comments/{commentId}/reply")
-	public ResponseEntity<ProductCommentDto> replyToComment(HttpServletRequest request, @PathVariable Long productId,
+	public ResponseEntity<ProductCommentDto> replyToComment(HttpServletRequest request, @PathVariable int productId,
 			@PathVariable Long commentId, @RequestBody ProductCommentDto productCommentDto) {
 
 //	    // Find the parent comment
@@ -215,14 +215,14 @@ public class ProductController {
 	}
 
 	@GetMapping("/{productId}/comments")
-	public ResponseEntity<List<ProductCommentDto>> getProductComments(@PathVariable Long productId) {
+	public ResponseEntity<List<ProductCommentDto>> getProductComments(@PathVariable int productId) {
 		List<ProductCommentDto> comments = productCommentService.getCommentsForProduct(productId);
 		return ResponseEntity.ok(comments);
 	}
 
 	@GetMapping("/{productId}/comments/parent/{parentCommentId}")
 	public ResponseEntity<List<ProductCommentDto>> replyToComment(HttpServletRequest request,
-			@PathVariable Long productId, @PathVariable @DefaultValue("null") String parentCommentId) {
+			@PathVariable int productId, @PathVariable @DefaultValue("null") String parentCommentId) {
 		Long pcId = null;
 		if (isLong(parentCommentId)) {
 			pcId = Long.parseLong(parentCommentId);
