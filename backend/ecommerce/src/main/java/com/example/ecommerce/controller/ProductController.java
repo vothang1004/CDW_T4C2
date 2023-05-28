@@ -66,12 +66,12 @@ public class ProductController {
 	public Page<Product> showProductsPage(@RequestParam(defaultValue = "1") int page,
 			@RequestParam(defaultValue = "10") int limit, @RequestParam(defaultValue = "none") String isBestSelling,
 			@RequestParam(defaultValue = "none") String sortBy, @RequestParam(defaultValue = "asc") String sortDir,
-			@RequestParam(defaultValue = "") String search, @RequestParam(defaultValue = "-1") int categoryId) {
+			@RequestParam(defaultValue = "") String search, @RequestParam(defaultValue = "-1") int category) {
 		Page<Product> productPage;
 		Category c = null;
-		if (categoryId > -1) {
+		if (category > -1) {
 			c = new Category();
-			c.setId(categoryId);
+			c.setId(category);
 		}
 		page -= 1;
 		if (page < 0) {
@@ -80,6 +80,7 @@ public class ProductController {
 		Boolean isBest = null;
 		if (!isBestSelling.equals("none"))
 			isBest = Boolean.valueOf(isBestSelling);
+//		System.out.println("category: "+c+", id: "+category);
 		productPage = productService.productPage(search, c, isBest, page, limit, sortBy, sortDir);
 		return productPage;
 	}

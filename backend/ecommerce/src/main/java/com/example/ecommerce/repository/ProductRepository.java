@@ -24,7 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
 	Page<Product> findByCategory(Category category, Pageable pageable);
 	//because all data get into is only several, so paging from there is only there.!
-	@Query("SELECT p FROM Product p WHERE (lower(p.name) LIKE %:keyword%) AND (:category IS NULL OR p.category = :category) AND (:isBestSelling IS NULL OR p.isBestSelling = :isBestSelling)")
+	@Query("SELECT p FROM Product p WHERE (lower(p.name) LIKE %:keyword%) AND (:category IS NULL OR p.category.id = :category) AND (:isBestSelling IS NULL OR p.isBestSelling = :isBestSelling)")
 	List<Product> finds(String keyword, Category category, Boolean isBestSelling);
 
 //findByNameContainingIgnoreCaseOrCategory
