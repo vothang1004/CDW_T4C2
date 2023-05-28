@@ -31,7 +31,7 @@ public class ProductService {
 	@Autowired
 	private CategoryRepository categoryRepository;
 
-	public void incrementViewCount(long productId) {
+	public void incrementViewCount(int productId) {
 		productRepository.incrementViewCount(productId);
 	}
 
