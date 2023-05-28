@@ -46,5 +46,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 	@Modifying
 	@Transactional //everyupdate or delete must be a transaction
 	@Query("UPDATE Product p SET p.view = p.view + 1 WHERE p.id = :productId")
-	void incrementViewCount(@Param("productId") Long productId);
+	void incrementViewCount(@Param("productId") int productId);
 }
