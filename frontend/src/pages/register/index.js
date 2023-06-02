@@ -40,7 +40,7 @@ function RegisterPage() {
       setTimeout(() => {
         registerUser({ data: values, router });
         resovle();
-      }, 500);
+      }, 500);\
     });
   };
 
